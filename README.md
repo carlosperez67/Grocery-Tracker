@@ -32,9 +32,20 @@ This has led to things going bad and me having to throw them out. Forgetting wha
 ## User Stories
 - As a user, I want to be able to create a new item bought at the grocery store
 - As a user, I want to give that item bought a price tag, expiry date (if any) and quantity/size
+- As a user, I want to keep track of when I use my items bought
+- As a user, I want to be reminded when items are nearing their expiry date
+- As a user, I want to know what items are within x days of expiring
+- As a user, I want to know if an item is expired
+- As a user, I want to know how many portions of an item I have left
+- As a user, I want to know what is in my fridge, freezer and/or pantry
+
+
+
+## Not Doing For Now
+- As a user, I want to be able to create a weekly meal plan and identify what ingredients I already have and lack for said meal plan.
+- As a user, I want to be able to have a grocery list generated for me that include the ingredients I lack for my meal plan.
+
+
 - As a user, I want to see a breakdown of how much I spend per grocery trip
 - As a user, I want to be able to input the ingredients used to make a meal and see an estimate of the meal cost.
 - As a user, I want to be able to see my average daily, weekly and monthly meal costs
-- As a user, I want to be reminded when items are nearing their expiry date
-- As a user, I want to be able to create a weekly meal plan and identify what ingredients I already have and lack for said meal plan.
-- As a user, I want to be able to have a grocery list generated for me that include the ingredients I lack for my meal plan.

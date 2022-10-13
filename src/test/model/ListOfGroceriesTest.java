@@ -1,8 +1,5 @@
 package model;
 
-import model.ItemTracking.NonPerishable;
-import model.ItemTracking.Perishable;
-import model.ItemTracking.StoringMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,33 +12,31 @@ public class ListOfGroceriesTest {
     private ListOfGroceries testLOG;
     private Perishable testP;
     private NonPerishable testNP;
-    private Money testMoney;
-    private Date testDate;
 
     @BeforeEach
     public void setUp() {
         testLOG = new ListOfGroceries();
-        testDate = new Date(2022, Calendar.OCTOBER, 20);
-        testMoney = new Money(100);
+        Date testDate = new Date(2022, Calendar.OCTOBER, 20);
+        Money testMoney = new Money(100);
         testP = new Perishable("Perishable", testMoney, 2,
-                StoringMethod.Fridge, testDate);
+                StoringMethod.fridge, testDate);
         testNP = new NonPerishable("Non Perishable", testMoney, 2);
     }
 
     @Test
-    public void ListOfGroceriesTest() {
+    public void listOfGroceriesTest() {
         assertEquals(0,testLOG.getSizeLoG());
     }
 
     @Test
-    public void addOne() {
+    public void addOneTest() {
         testLOG.addGrocery(testP);
         assertEquals(1,testLOG.getSizeLoG());
         assertTrue(testLOG.getListOfGroceries().contains(testP));
     }
 
     @Test
-    public void addMultiple() {
+    public void addMultipleTest() {
         testLOG.addGrocery(testP);
         assertEquals(1,testLOG.getSizeLoG());
         assertTrue(testLOG.getListOfGroceries().contains(testP));
@@ -53,7 +48,7 @@ public class ListOfGroceriesTest {
     }
 
     @Test
-    public void removeOne() {
+    public void removeOneTest() {
         testLOG.addGrocery(testP);
         assertEquals(1,testLOG.getSizeLoG());
         assertTrue(testLOG.getListOfGroceries().contains(testP));
@@ -64,7 +59,7 @@ public class ListOfGroceriesTest {
     }
 
     @Test
-    public void removeMultiple() {
+    public void removeMultipleTest() {
         testLOG.addGrocery(testP);
         testLOG.addGrocery(testNP);
         assertEquals(2,testLOG.getSizeLoG());
@@ -83,7 +78,7 @@ public class ListOfGroceriesTest {
     }
 
     @Test
-    public void addAndRemoveMultiple() {
+    public void addAndRemoveMultipleTest() {
         testLOG.addGrocery(testP);
         testLOG.addGrocery(testNP);
         assertEquals(2,testLOG.getSizeLoG());
@@ -105,10 +100,21 @@ public class ListOfGroceriesTest {
         assertFalse(testLOG.getListOfGroceries().contains(testP));
         assertTrue(testLOG.getListOfGroceries().contains(testNP));
 
+        testLOG.removeGrocery("DNE");
         testLOG.removeGrocery("Non Perishable");
         assertEquals(0,testLOG.getSizeLoG());
         assertFalse(testLOG.getListOfGroceries().contains(testNP));
         assertFalse(testLOG.getListOfGroceries().contains(testP));
+    }
+
+    @Test
+    public void findInMultipleTest() {
+        testLOG.addGrocery(testP);
+        testLOG.addGrocery(testNP);
+        assertEquals(testNP, testLOG.findGrocery("Non Perishable"));
+        // specified that this cannot happen in requires, but it is needed for code coverage
+        assertNull(testLOG.findGrocery("DNE"));
+
     }
 
 

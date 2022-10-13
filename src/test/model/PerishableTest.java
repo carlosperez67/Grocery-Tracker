@@ -1,7 +1,5 @@
 package model;
 
-import model.ItemTracking.Perishable;
-import model.ItemTracking.StoringMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +20,7 @@ public class PerishableTest {
         testExpiryDate = new Date(2022, Calendar.OCTOBER, 20);
         testToday = new Date(2022, Calendar.OCTOBER, 10);
         testP = new Perishable("Test Soy Milk", testMilkPrice,
-                12, StoringMethod.Fridge, testExpiryDate);
+                12, StoringMethod.fridge, testExpiryDate);
     }
 
     @Test
@@ -30,51 +28,60 @@ public class PerishableTest {
         assertEquals("Test Soy Milk", testP.getLabel());
         assertEquals(testMilkPrice, testP.getPrice());
         assertEquals(12, testP.getServingsLeft());
-        assertEquals(StoringMethod.Fridge, testP.getStoringMethod());
+        assertEquals(StoringMethod.fridge, testP.getStoringMethod());
         assertEquals(testExpiryDate, testP.getExpiryDate());
     }
 
     @Test
     public void daysUntilExpiredTest() {
-        assertEquals(10, testP.daysUntilExpired());
+        assertEquals(10, testP.daysUntilExpired(testToday));
     }
 
     @Test
     public void isExpiredTestFalseTest() {
-        assertFalse(testP.isExpired());
+        assertFalse(testP.isExpired(testToday));
     }
 
     @Test
     public void decreaseDaysUntilExpiredTest() {
         testToday = new Date(2022, Calendar.OCTOBER, 12);
-        assertEquals(8, testP.daysUntilExpired());
-        assertFalse(testP.isExpired());
+        assertEquals(8, testP.daysUntilExpired(testToday));
+        assertFalse(testP.isExpired(testToday));
 
         testToday = new Date(2022, Calendar.OCTOBER, 19);
-        assertEquals(1, testP.daysUntilExpired());
-        assertFalse(testP.isExpired());
+        assertEquals(1, testP.daysUntilExpired(testToday));
+        assertFalse(testP.isExpired(testToday));
     }
 
     @Test
     public void makeExpiredSlowly() {
         testToday = new Date(2022, Calendar.OCTOBER, 12);
-        assertEquals(8, testP.daysUntilExpired());
-        assertFalse(testP.isExpired());
+        assertEquals(8, testP.daysUntilExpired(testToday));
+        assertFalse(testP.isExpired(testToday));
 
         testToday = new Date(2022, Calendar.OCTOBER, 19);
-        assertEquals(1, testP.daysUntilExpired());
-        assertFalse(testP.isExpired());
+        assertEquals(1, testP.daysUntilExpired(testToday));
+        assertFalse(testP.isExpired(testToday));
 
         testToday = new Date(2022, Calendar.OCTOBER, 20);
-        assertEquals(0, testP.daysUntilExpired());
-        assertFalse(testP.isExpired());
+        assertEquals(0, testP.daysUntilExpired(testToday));
+        assertFalse(testP.isExpired(testToday));
 
         testToday = new Date(2022, Calendar.OCTOBER, 21);
-        assertTrue(testP.isExpired());
+        assertTrue(testP.isExpired(testToday));
 
         testToday = new Date(2022, Calendar.OCTOBER, 23);
-        assertTrue(testP.isExpired());
+        assertTrue(testP.isExpired(testToday));
     }
+
+    // TODO
+//    @Test
+//    public void fuckAround() {
+//
+//        NonPerishable testNP = new NonPerishable("dummy", testMilkPrice,12);
+//        assertEquals(testP.getClass(),testNP.getClass());
+//    }
+
 
 
 }

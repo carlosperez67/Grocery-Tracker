@@ -69,6 +69,25 @@ class MoneyTest {
         assertEquals("11.51", testMoneyB.getAmtDollars());
     }
 
+    @Test
+    public void moneySubtractAmtHighValueTest() {
+        testMoneyA.addAmt(1151);
+        assertEquals(1151, testMoneyA.getAmtCents());
+        assertEquals("11.51", testMoneyA.getAmtDollars());
+
+        testMoneyA.subtractAmt("10.51");
+        assertEquals(100, testMoneyA.getAmtCents());
+        assertEquals("1.00", testMoneyA.getAmtDollars());
+
+        testMoneyB.addAmt("11.51");
+        assertEquals(1151, testMoneyB.getAmtCents());
+        assertEquals("11.51", testMoneyB.getAmtDollars());
+
+        testMoneyB.subtractAmt(1051);
+        assertEquals(100, testMoneyB.getAmtCents());
+        assertEquals("1.00", testMoneyB.getAmtDollars());
+    }
+
     // adding multiple amounts and switching which constructor is used
     @Test
     public void moneyAddAmtMultipleSwitchTest() {

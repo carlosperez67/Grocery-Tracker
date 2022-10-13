@@ -1,6 +1,4 @@
-package model.ItemTracking;
-
-import model.Money;
+package model;
 
 // Represents grocery items that aren't perishable: example, rice, spices, sugar etc...
 public class NonPerishable extends GroceryItem {
@@ -14,7 +12,7 @@ public class NonPerishable extends GroceryItem {
     //          and with the storing method of pantry
     public NonPerishable(String label, Money price, int servingSize) {
         super(label,price,servingSize);
-        this.storingMethod = StoringMethod.Pantry;
+        this.storingMethod = StoringMethod.pantry;
     }
 
 

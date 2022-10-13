@@ -1,9 +1,8 @@
 package model;
 
-import model.ItemTracking.GroceryItem;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // a list of the groceries at home
 public class ListOfGroceries {
@@ -37,6 +36,23 @@ public class ListOfGroceries {
     // Effects: removes certain grocery item from the list with the given label.
     //       - if there are two of the exact same label, it will
     public void removeGrocery(String label) {
-       //stub
+        for (GroceryItem g : listOfGroceries) {
+            if (Objects.equals(label, g.getLabel())) {
+                listOfGroceries.remove(g);
+                break;
+            }
+        }
+    }
+
+    // Requires: specified item is already in the list
+    // Modifies:
+    // Effects: returns grocery item
+    public GroceryItem findGrocery(String label) {
+        for (GroceryItem g : listOfGroceries) {
+            if (Objects.equals(label, g.getLabel())) {
+                return g;
+            }
+        }
+        return null;
     }
 }

@@ -9,8 +9,10 @@ public class Budget {
     // Modifies: this
     // Effects: creates budget with given monthlyBudget and
     //          no money spent
+    //          and with all your money in the budget left unspent
     public Budget(Money monthlyBudget) {
         this.monthlyBudget = monthlyBudget;
+        this.amtLeft = new Money(monthlyBudget.getAmtCents());
         this.amtSpent = new Money(0);
     }
 
@@ -35,6 +37,7 @@ public class Budget {
     // Effects: Subtracts the amount of money m from the budget left and
     //        add the amount represented by m to amtSpent
     public void spendBudget(Money m) {
-        //stub
+        amtLeft.subtractAmt(m.getAmtCents());
+        amtSpent.addAmt(m.getAmtCents());
     }
 }

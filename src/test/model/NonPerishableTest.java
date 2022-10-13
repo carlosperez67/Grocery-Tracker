@@ -1,7 +1,5 @@
 package model;
 
-import model.ItemTracking.NonPerishable;
-import model.ItemTracking.StoringMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +17,9 @@ public class NonPerishableTest {
 
     @Test
     public void npTest() {
-        assertEquals("Test Canned Bean", testNP.getLabel());
+        assertEquals("Test Canned Beans", testNP.getLabel());
         assertEquals(1, testNP.getServingsLeft());
-        assertEquals(StoringMethod.Pantry, testNP.getStoringMethod());
+        assertEquals(StoringMethod.pantry, testNP.getStoringMethod());
         assertEquals(beanPrice, testNP.getPrice());
     }
 

@@ -19,8 +19,8 @@ public class BudgetTest {
     public void budgetTest() {
         Money m1 = new Money(0);
         assertEquals(testBudgetMoney, testBudget.getMonthlyBudget());
-        assertEquals(testBudgetMoney, testBudget.getAmtLeft());
-        assertEquals(m1, testBudget.getAmtSpent());
+        assertEquals(testBudgetMoney.getAmtCents(), testBudget.getAmtLeft().getAmtCents());
+        assertEquals(m1.getAmtCents(), testBudget.getAmtSpent().getAmtCents());
     }
 
     @Test
@@ -29,8 +29,8 @@ public class BudgetTest {
         Money m2 = new Money("450.00");
 
         testBudget.spendBudget(m1);
-        assertEquals(m2, testBudget.getAmtLeft());
-        assertEquals(m1, testBudget.getAmtSpent());
+        assertEquals(m2.getAmtCents(), testBudget.getAmtLeft().getAmtCents());
+        assertEquals(m1.getAmtCents(), testBudget.getAmtSpent().getAmtCents());
     }
 
     @Test
@@ -39,15 +39,15 @@ public class BudgetTest {
         Money m2 = new Money("499.99");
 
         testBudget.spendBudget(m1);
-        assertEquals(m2, testBudget.getAmtLeft());
-        assertEquals(m1, testBudget.getAmtSpent());
+        assertEquals(m2.getAmtCents(), testBudget.getAmtLeft().getAmtCents());
+        assertEquals(m1.getAmtCents(), testBudget.getAmtSpent().getAmtCents());
 
         Money m3 = new Money("300.00");
         Money m4 = new Money("199.99");
         Money m5 = new Money("300.01");
         testBudget.spendBudget(m3);
-        assertEquals(m4, testBudget.getAmtLeft());
-        assertEquals(m5, testBudget.getAmtSpent());
+        assertEquals(m4.getAmtCents(), testBudget.getAmtLeft().getAmtCents());
+        assertEquals(m5.getAmtCents(), testBudget.getAmtSpent().getAmtCents());
 
     }
 
