@@ -9,6 +9,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// tests for ListOfGroceries class
 public class ListOfGroceriesTest {
     private ListOfGroceries testLOG;
     private Perishable testP;

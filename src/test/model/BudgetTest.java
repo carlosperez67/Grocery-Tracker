@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// tests for budget class
 public class BudgetTest {
     private Budget testBudget;
     private Money testBudgetMoney;

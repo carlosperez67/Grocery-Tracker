@@ -8,6 +8,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// test for Perishable Class
 public class PerishableTest {
     private Perishable testP;
     private Money testMilkPrice;

@@ -1,6 +1,6 @@
 package model;
 
-// This class represents the general grocery item that can be bought from a grocery store
+// This class represents the general(abstract) grocery item that can be bought from a grocery store
 public abstract class GroceryItem {
     private String label;                 // name of grocery item
     private Money price;                    // price of grocery item

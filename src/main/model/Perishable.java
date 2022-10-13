@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+// represents grocery items that are perishable ie have an expiry date, like milk, eggs etc
 public class Perishable extends GroceryItem {
 
     private final Date expiryDate;                    // expiry date for grocery item

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// test for NonPerishable Class
 public class NonPerishableTest {
     private NonPerishable testNP;
     private Money beanPrice;

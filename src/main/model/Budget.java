@@ -1,5 +1,6 @@
 package model;
 
+// This class represents the monthly budget allowance to be spent on grocery items.
 public class Budget {
     private Money monthlyBudget;
     private Money amtSpent;
