@@ -29,7 +29,7 @@ public class GroceryApp {
     // effects: processes user input and commits actions
     private void runGroceryApp() {
         boolean keepGoing = true;
-        String command = null;
+        String command;
         initA();
 
         while (keepGoing) {

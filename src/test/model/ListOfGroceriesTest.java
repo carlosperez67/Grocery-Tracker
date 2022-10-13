@@ -13,7 +13,6 @@ public class ListOfGroceriesTest {
     private ListOfGroceries testLOG;
     private Perishable testP;
     private NonPerishable testNP;
-    private NonPerishable testNP2;
     private Money testMoney;
 
     @BeforeEach
@@ -138,7 +137,7 @@ public class ListOfGroceriesTest {
     public void getListOfGroceryLabelsConditionsComplexTest() {
         // making a new object here because it would be redundant to add in before each
         // as I only need it in this test
-        testNP2 = new NonPerishable("NonPerishable2", testMoney, 2);
+        NonPerishable testNP2 = new NonPerishable("NonPerishable2", testMoney, 2);
         testLOG.addGrocery(testP);
         testLOG.addGrocery(testNP);
         testLOG.addGrocery(testNP2);
