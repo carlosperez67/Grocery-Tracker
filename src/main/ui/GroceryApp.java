@@ -54,6 +54,33 @@ public class GroceryApp {
         System.out.println("\nGoodbye!");
     }
 
+    //effects: displays screen asking for monthly budget
+    private void displayWelcome() {
+        System.out.println("\nWelcome to your grocery tracker!");
+        System.out.println("Press q at anytime to quit");
+        System.out.println("\nWhat is your monthly groceries budget?");
+        System.out.println("\tUse format dollars.cents");
+        System.out.println("\tExample: 1.00");
+
+    }
+
+    // EFFECTS: displays menu of options to user and says today's date
+    private void displayMenu() {
+        System.out.println("\nToday is " + todaysDate);
+        System.out.println("\nSelect from:");
+        System.out.println("\tadd -> add grocery item");
+        System.out.println("\tremove -> remove grocery item");
+        System.out.println("\tgroceries -> get list of grocery items bought");
+        System.out.println("\tuse -> use a serving of grocery item");
+        System.out.println("\texpiry -> check if an item is expired");
+        System.out.println("\tremaining -> get budget remaining");
+        System.out.println("\tspent -> get amount spent");
+        System.out.println("\tdate -> change current date");
+
+        System.out.println("\tq -> quit");
+    }
+
+
     // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
@@ -77,6 +104,114 @@ public class GroceryApp {
             System.out.println("Selection not valid...");
         }
     }
+
+    //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable), Money, Budget
+    // Effects: Makes a grocery item and adds it to the list with appropriate specifications
+    private void doAdd() {
+        if (selectType().equals("np")) {
+            addNonPerishable();
+        } else {
+            addPerishable();
+        }
+    }
+
+    // Requires: the input is formatted exactly as asked
+    //            - Comma separated, no space
+    //            - PriceInDollars must be in format Dollars.xx where "
+    //                    + "is the amount of cents. For 0 cents put 00.
+    //            - PriceInDollars represents a value >0
+    //Modifies: GroceryList, GroceryItem (NonPerishable), Money, Budget
+    // Effects: Makes a non-perishable grocery item and adds it to the list with appropriate specifications
+    //           -spends the money from the budget
+    private void addNonPerishable() {
+        String selection = "";
+        // similar code to TellerApp. attributed to TellerApp
+        while (selection.equals("")) {
+            System.out.println("Adding a Non Perishable food item.");
+            System.out.println("Please give a Label,PriceInDollars,NumberOfServings");
+            System.out.println("\t Note: Comma separated, no space");
+            System.out.println("PriceInDollars must be in format Dollars.xx where "
+                    + "is the amount of cents. For 0 cents put 00.");
+            selection = input.next().toLowerCase();
+
+            String[] splitValue = selection.split(",");
+            String label = splitValue[0];
+            int servings = Integer.parseInt(splitValue[2]);
+
+            Money moneyUsed = new Money(splitValue[1]);
+
+            NonPerishable newNP = new NonPerishable(label, moneyUsed, servings);
+            listOfGroceriesG.addGrocery(newNP);
+            budget.spendBudget(moneyUsed);
+            System.out.println("Bought and added " + label + " to the pantry!");
+        }
+    }
+
+    // Requires: the input is formatted exactly as asked
+    //            - Comma separated, no space
+    //            - PriceInDollars must be in format Dollars.xx where "
+    //                    + "is the amount of cents. For 0 cents put 00.
+    //            - PriceInDollars represents a value >0
+    //Modifies: GroceryList, GroceryItem (Perishable), Money, Budget
+    // Effects: Makes a perishable grocery item and adds it to the list with appropriate specifications
+    //           -spends the money from the budget
+    private void addPerishable() {
+        String selection = "";
+        // similar code to TellerApp. attributed to TellerApp
+        while (selection.equals("")) {
+            System.out.println("Adding a Perishable food item.");
+            System.out.println("Please give a Label,PriceInDollars,NumberOfServings,StoringMethod,Year,Month,Day");
+            System.out.println("\t Note: Comma separated, no space");
+            System.out.println("PriceInDollars must be in format Dollars.xx where "
+                    + "is the amount of cents. For 0 cents put 00.");
+            System.out.println("\t StoringMethod is one of fridge,freezer,pantry");
+            System.out.println("\t Year,Month,Day are all integer values that represent the expiry date");
+            selection = input.next();
+            selection = selection.toLowerCase();
+
+            String[] splitValue = selection.split(",");
+            String label = splitValue[0];
+            int servings = Integer.parseInt(splitValue[2]);
+            StoringMethod storingMethod = StoringMethod.valueOf(splitValue[3]);
+
+            Money moneyUsed = new Money(splitValue[1]);
+
+            Perishable newP = new Perishable(label, moneyUsed, servings, storingMethod,
+                    new Date(Integer.parseInt(splitValue[4]), Integer.parseInt(splitValue[5]) - 1,
+                            Integer.parseInt(splitValue[6])));
+            listOfGroceriesG.addGrocery(newP);
+            budget.spendBudget(moneyUsed);
+            System.out.println("Bought and added " + newP.getLabel() + " to the " + storingMethod.name());
+        }
+    }
+
+    //Requires: Label must exist already in the list
+    //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable)
+    // Effects: Find a grocery item and removes it from the list
+    private void doRemove() {
+        String selection = "";
+        while (selection.equals("")) {
+            System.out.println("What is the label of the item you would like to remove?");
+            selection = input.next();
+            selection = selection.toLowerCase();
+            listOfGroceriesG.removeGrocery(selection);
+            System.out.println("Removed " + selection);
+        }
+    }
+
+
+    //Effects: Waits for user command and returns the type of grocery item they chose
+    private String selectType() {
+        String selection = "";
+        while (!(selection.equals("np") || selection.equals("p"))) {
+            System.out.println("np for non perishable");
+            System.out.println("p for perishable");
+            selection = input.next();
+            selection = selection.toLowerCase();
+        }
+        return selection;
+    }
+
 
     // Requires:
     // Modifies:
@@ -149,7 +284,6 @@ public class GroceryApp {
         System.out.println(budget.getAmtSpent().getAmtDollars());
     }
 
-    //TODO
     //Requires: Label must exist already in the list
     //Modifies: GroceryItem (Perishable or NonPerishable)
     // Effects: Find a grocery item and uses a certain number of servings
@@ -191,144 +325,11 @@ public class GroceryApp {
                 servings = input.next();
                 servings = servings.toLowerCase();
                 g.useMultipleServing(Integer.parseInt(servings));
-                System.out.println("This item has "
-                        + g.getServingsLeft() + " servings left");
+                System.out.println("This item has " + g.getServingsLeft() + " servings left");
             }
         }
     }
 
-    //Requires: Label must exist already in the list
-    //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable)
-    // Effects: Find a grocery item and removes it from the list
-    private void doRemove() {
-        String selection = "";
-        while (selection.equals("")) {
-            System.out.println("What is the label of the item you would like to remove?");
-            selection = input.next();
-            selection = selection.toLowerCase();
-            listOfGroceriesG.removeGrocery(selection);
-            System.out.println("Removed " + selection);
-        }
-    }
-
-
-    //Effects: Waits for user command and returns the type of grocery item they chose
-    private String selectType() {
-        String selection = "";
-        while (!(selection.equals("np") || selection.equals("p"))) {
-            System.out.println("np for non perishable");
-            System.out.println("p for perishable");
-            selection = input.next();
-            selection = selection.toLowerCase();
-        }
-        return selection;
-    }
-
-
-    //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable), Money, Budget
-    // Effects: Makes a grocery item and adds it to the list with appropriate specifications
-    private void doAdd() {
-        if (selectType().equals("np")) {
-            addNonPerishable();
-        } else {
-            addPerishable();
-        }
-    }
-
-    // Requires: the input is formatted exactly as asked
-    //            - Comma separated, no space
-    //            - PriceInDollars must be in format Dollars.xx where "
-    //                    + "is the amount of cents. For 0 cents put 00.
-    //            - PriceInDollars represents a value >0
-    //Modifies: GroceryList, GroceryItem (NonPerishable), Money, Budget
-    // Effects: Makes a non perishable grocery item and adds it to the list with appropriate specifications
-    //           -spends the money from the budget
-    private void addNonPerishable() {
-        String selection = "";
-        // similar code to TellerApp. attributed to TellerApp
-        while (selection.equals("")) {
-            System.out.println("Adding a Non Perishable food item.");
-            System.out.println("Please give a Label,PriceInDollars,NumberOfServings");
-            System.out.println("\t Note: Comma separated, no space");
-            System.out.println("PriceInDollars must be in format Dollars.xx where "
-                    + "is the amount of cents. For 0 cents put 00.");
-            selection = input.next().toLowerCase();
-
-            String[] splitValue = selection.split(",");
-            String label = splitValue[0];
-            int servings = Integer.parseInt(splitValue[2]);
-
-            Money moneyUsed = new Money(splitValue[1]);
-
-            NonPerishable newNP = new NonPerishable(label, moneyUsed, servings);
-            listOfGroceriesG.addGrocery(newNP);
-            budget.spendBudget(moneyUsed);
-            System.out.println("Bought and added " + label + " to the pantry!");
-        }
-    }
-
-    // Requires: the input is formatted exactly as asked
-    //            - Comma separated, no space
-    //            - PriceInDollars must be in format Dollars.xx where "
-    //                    + "is the amount of cents. For 0 cents put 00.
-    //            - PriceInDollars represents a value >0
-    //Modifies: GroceryList, GroceryItem (Perishable), Money, Budget
-    // Effects: Makes a perishable grocery item and adds it to the list with appropriate specifications
-    //           -spends the money from the budget
-    private void addPerishable() {
-        String selection = "";
-        // similar code to TellerApp. attributed to TellerApp
-        while (selection.equals("")) {
-            System.out.println("Adding a Perishable food item.");
-            System.out.println("Please give a Label,PriceInDollars,NumberOfServings,StoringMethod,Year,Month,Day");
-            System.out.println("\t Note: Comma separated, no space");
-            System.out.println("PriceInDollars must be in format Dollars.xx where "
-                    + "is the amount of cents. For 0 cents put 00.");
-            System.out.println("\t StoringMethod is one of fridge,freezer,pantry");
-            System.out.println("\t Year,Month,Day are all integer values that represent the expiry date");
-            selection = input.next();
-            selection = selection.toLowerCase();
-
-            String[] splitValue = selection.split(",");
-            String label = splitValue[0];
-            int servings = Integer.parseInt(splitValue[2]);
-            StoringMethod storingMethod = StoringMethod.valueOf(splitValue[3]);
-
-            Money moneyUsed = new Money(splitValue[1]);
-
-            Perishable newP = new Perishable(label, moneyUsed, servings, storingMethod,
-                    new Date(Integer.parseInt(splitValue[4]), Integer.parseInt(splitValue[5]) - 1,
-                            Integer.parseInt(splitValue[6])));
-            listOfGroceriesG.addGrocery(newP);
-            budget.spendBudget(moneyUsed);
-            System.out.println("Bought and added " + newP.getLabel() + " to the " + storingMethod.name());
-        }
-    }
-
-    // EFFECTS: displays menu of options to user
-    private void displayMenu() {
-        System.out.println("\nSelect from:");
-        System.out.println("\tadd -> add grocery item");
-        System.out.println("\tremove -> remove grocery item");
-        System.out.println("\tgroceries -> get list of grocery items bought");
-        System.out.println("\tuse -> use a serving of grocery item");
-        System.out.println("\texpiry -> check if an item is expired");
-        System.out.println("\tremaining -> get budget remaining");
-        System.out.println("\tspent -> get amount spent");
-        System.out.println("\tdate -> change current date");
-
-        System.out.println("\tq -> quit");
-    }
-
-    //effects: displays screen asking for monthly budget
-    private void displayWelcome() {
-        System.out.println("\nWelcome to your grocery tracker!");
-        System.out.println("Press q at anytime to quit");
-        System.out.println("\nWhat is your monthly groceries budget?");
-        System.out.println("\tUse format dollars.cents");
-        System.out.println("\tExample: 1.00");
-
-    }
 
     //modifies:
     // effects: initializes listOfGroceries

@@ -15,37 +15,39 @@
 - Be able to create a weekly meal plan and create automated shopping lists based on what you have and what you still need.
 
 *Optional/Extra features I will add if time allows*:
-- Keep track of where individual items are within your fridge/pantry to find them easily using a GUI.
+- Keep track of where individual items are within your fridge/freezer/pantry to find them easily using a GUI.
   (This is useful if you share a fridge with roommates)
 
 **Who will use it?**
 - Individuals who cook alone and want to be better organized financially. 
-- Able to save money and the environment by not letting food go to waste.
-- With the weekly customizable meal plan and automated grocery list making, you can ensure you won't buy duplicates of things you already have at the store. 
+- Able to save money and the environment by not letting food go to waste by seeing all the expiry dates easily
+- Able to see with a click what you already have and how much so, you can ensure you won't buy duplicates of things you already have at the store. 
 
 
 **Why is this project of interest to me?**
-- I'm living in a house with friends and I've realized that I quite often forget what I already have in my fridge. 
-This has led to things going bad and me having to throw them out. Forgetting what I have also sometimes leads to me buying duplicates at the store because I'm not sure what I already have at home. I often forget to make a shopping list and having an automated way to create a shopping list would make life easier. 
+- I'm living in a house with friends, and I've realized that I quite often forget what I already have in my fridge. 
+This has led to things going bad and me having to throw them out. Forgetting what I have also sometimes leads to me buying duplicates at the store because I'm not sure what I already have at home.
 
 
 ## User Stories
 - As a user, I want to be able to create a new item bought at the grocery store
-- As a user, I want to give that item bought a price tag, expiry date (if any) and quantity/size
-- As a user, I want to keep track of when I use my items bought
-- As a user, I want to be reminded when items are nearing their expiry date
-- As a user, I want to know what items are within x days of expiring
+- As a user, I want to give that item bought a price tag, expiry date (if any) and serving size
+- As a user, I want to be able to check when an items' expiry date is
+- As a user, I want to be able to use an item and note it down in the tracker
 - As a user, I want to know if an item is expired
 - As a user, I want to know how many portions of an item I have left
 - As a user, I want to know what is in my fridge, freezer and/or pantry
+- As a user, I want to know how much is left in my budget
+- -  As a user, I want to know how much of my budget I have already spent
 
 
 
 ## Not Doing For Now
 - As a user, I want to be able to create a weekly meal plan and identify what ingredients I already have and lack for said meal plan.
 - As a user, I want to be able to have a grocery list generated for me that include the ingredients I lack for my meal plan.
-
-
+- As a user, I want to keep track of when I use my items bought
+- As a user, I want to be reminded when items are nearing their expiry date
+- As a user, I want to know what items are within x days of expiring
 - As a user, I want to see a breakdown of how much I spend per grocery trip
 - As a user, I want to be able to input the ingredients used to make a meal and see an estimate of the meal cost.
 - As a user, I want to be able to see my average daily, weekly and monthly meal costs
