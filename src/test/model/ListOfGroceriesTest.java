@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,12 +13,14 @@ public class ListOfGroceriesTest {
     private ListOfGroceries testLOG;
     private Perishable testP;
     private NonPerishable testNP;
+    private NonPerishable testNP2;
+    private Money testMoney;
 
     @BeforeEach
     public void setUp() {
         testLOG = new ListOfGroceries();
         Date testDate = new Date(2022, Calendar.OCTOBER, 20);
-        Money testMoney = new Money(100);
+        testMoney = new Money(100);
         testP = new Perishable("Perishable", testMoney, 2,
                 StoringMethod.fridge, testDate);
         testNP = new NonPerishable("Non Perishable", testMoney, 2);
@@ -114,8 +117,39 @@ public class ListOfGroceriesTest {
         assertEquals(testNP, testLOG.findGrocery("Non Perishable"));
         // specified that this cannot happen in requires, but it is needed for code coverage
         assertNull(testLOG.findGrocery("DNE"));
+    }
+
+    @Test
+    public void getListOfGroceryLabelsOnceTest() {
+        testLOG.addGrocery(testP);
+        assertEquals(Arrays.asList("Perishable"),
+                testLOG.getListOfGroceryLabels());
+    }
+
+    @Test
+    public void getListOfGroceryLabelsMultipleTest() {
+        testLOG.addGrocery(testP);
+        testLOG.addGrocery(testNP);
+        assertEquals(Arrays.asList("Perishable", "Non Perishable"),
+                testLOG.getListOfGroceryLabels());
+    }
+
+    @Test
+    public void getListOfGroceryLabelsConditionsComplexTest() {
+        // making a new object here because it would be redundant to add in before each
+        // as I only need it in this test
+        testNP2 = new NonPerishable("NonPerishable2", testMoney, 2);
+        testLOG.addGrocery(testP);
+        testLOG.addGrocery(testNP);
+        testLOG.addGrocery(testNP2);
+
+        assertEquals(Arrays.asList("Non Perishable", "NonPerishable2"),
+        testLOG.getListOfGroceryLabels(StoringMethod.pantry));
 
     }
+
+
+
 
 
 }

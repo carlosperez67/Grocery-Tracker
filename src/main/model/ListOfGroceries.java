@@ -19,6 +19,33 @@ public class ListOfGroceries {
         return listOfGroceries;
     }
 
+    //Requires: list of groceries is not empty
+    //
+    // Modifies:
+    // Effects: returns list of the grocery labels
+    public List<String> getListOfGroceryLabels() {
+        List<String> loString = new ArrayList<>();
+        for (GroceryItem g : listOfGroceries) {
+            loString.add(g.getLabel());
+        }
+        return loString;
+    }
+
+    //Requires: list of groceries is not empty
+    //          - ltn is StoringMethod (enum)
+    // Modifies:
+    // Effects: returns list of the grocery labels that are in a certain location
+    public List<String> getListOfGroceryLabels(StoringMethod ltn) {
+        List<String> loString = new ArrayList<>();
+        for (GroceryItem g : listOfGroceries) {
+            if (g.getStoringMethod().equals(ltn)) {
+                loString.add(g.getLabel());
+            }
+        }
+        return loString;
+    }
+
+
     // Effects: returns the size of list
     public int getSizeLoG() {
         return listOfGroceries.size();

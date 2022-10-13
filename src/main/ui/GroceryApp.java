@@ -10,6 +10,7 @@ import model.Money;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 // Grocery Budget Tracker Application
@@ -33,25 +34,23 @@ public class GroceryApp {
 
         while (keepGoing) {
             displayWelcome();
-            command = input.next();
-            command = command.toLowerCase();
+            command = input.next().toLowerCase();
             if (command.equals("q")) {
                 keepGoing = false;
             } else {
                 initB(command);
-                break;
+                while (keepGoing) {
+                    displayMenu();
+                    command = input.next().toLowerCase();
+                    if (command.equals("q")) {
+                        keepGoing = false;
+                    } else {
+                        processCommand(command);
+                    }
+                }
             }
         }
-        while (keepGoing) {
-            displayMenu();
-            command = input.next();
-            command = command.toLowerCase();
-            if (command.equals("q")) {
-                keepGoing = false;
-            } else {
-                processCommand(command);
-            }
-        }
+
         System.out.println("\nGoodbye!");
     }
 
@@ -65,7 +64,6 @@ public class GroceryApp {
         } else if (command.equals("use")) {
             doUse();
         } else if (command.equals("expiry")) {
-            System.out.println("ABout to call expiry method");
             doExpiry();
         } else if (command.equals("remaining")) {
             getRemaining();
@@ -73,10 +71,44 @@ public class GroceryApp {
             setDate();
         } else if (command.equals("spent")) {
             getSpent();
+        } else if (command.equals("groceries")) {
+            getList();
         } else {
             System.out.println("Selection not valid...");
         }
     }
+
+    // Requires:
+    // Modifies:
+    // Effects: prints out the list of labels in the list of grocery items with option of putting in filters based on
+    //          location of items
+    private void getList() {
+        String selection = "";
+        String filter = "";
+        while (selection.equals("")) {
+            System.out.println("Do you want to filter by storage location?");
+            System.out.println("\t y or n");
+            selection = input.next().toLowerCase();
+            if (selection.equals("n")) {
+                printLabelList(listOfGroceriesG.getListOfGroceryLabels());
+            } else {
+                while (filter.equals("")) {
+                    System.out.println("Which location?");
+                    System.out.println("\t fridge(fg) or freezer(fz) or pantry(p)");
+                    filter = input.next().toLowerCase();
+                    if (filter.equals("fg") || filter.equals("fridge")) {
+                        printLabelList(listOfGroceriesG.getListOfGroceryLabels(StoringMethod.fridge));
+                    } else if (filter.equals("fz") || filter.equals("freezer")) {
+                        printLabelList(listOfGroceriesG.getListOfGroceryLabels(StoringMethod.freezer));
+                    } else {
+                        printLabelList(listOfGroceriesG.getListOfGroceryLabels(StoringMethod.pantry));
+                    }
+                }
+
+            }
+        }
+    }
+
 
     //Requires: day is [1,31]
     //          month is [1,12]
@@ -123,14 +155,11 @@ public class GroceryApp {
     // Effects: Find a grocery item and uses a certain number of servings
     private void doExpiry() {
         String selection = "";
-        System.out.println("About to enter the while loop -> line 125");
         while (selection.equals("")) {
             System.out.println("What is the label of the item you would like check?");
             selection = input.next();
             selection = selection.toLowerCase();
-            System.out.println(selection + "   line 128");
             GroceryItem g1 = listOfGroceriesG.findGrocery(selection);
-            System.out.println(g1.getLabel() + "    line 130");
 
             Money dummyMoney = new Money(1);
             NonPerishable dummyNP = new NonPerishable("dummy", dummyMoney, 12);
@@ -221,16 +250,15 @@ public class GroceryApp {
             System.out.println("Adding a Non Perishable food item.");
             System.out.println("Please give a Label,PriceInDollars,NumberOfServings");
             System.out.println("\t Note: Comma separated, no space");
-            System.out.println("PriceInDollars must be in format Dollars.xx where " + "is the amount of cents. For 0 cents put 00.");
-            selection = input.next();
-            selection = selection.toLowerCase();
+            System.out.println("PriceInDollars must be in format Dollars.xx where "
+                    + "is the amount of cents. For 0 cents put 00.");
+            selection = input.next().toLowerCase();
 
             String[] splitValue = selection.split(",");
             String label = splitValue[0];
-            String price = splitValue[1];
             int servings = Integer.parseInt(splitValue[2]);
 
-            Money moneyUsed = new Money(price);
+            Money moneyUsed = new Money(splitValue[1]);
 
             NonPerishable newNP = new NonPerishable(label, moneyUsed, servings);
             listOfGroceriesG.addGrocery(newNP);
@@ -250,11 +278,12 @@ public class GroceryApp {
     private void addPerishable() {
         String selection = "";
         // similar code to TellerApp. attributed to TellerApp
-        while (selection == "") {
+        while (selection.equals("")) {
             System.out.println("Adding a Perishable food item.");
             System.out.println("Please give a Label,PriceInDollars,NumberOfServings,StoringMethod,Year,Month,Day");
             System.out.println("\t Note: Comma separated, no space");
-            System.out.println("PriceInDollars must be in format Dollars.xx where " + "is the amount of cents. For 0 cents put 00.");
+            System.out.println("PriceInDollars must be in format Dollars.xx where "
+                    + "is the amount of cents. For 0 cents put 00.");
             System.out.println("\t StoringMethod is one of fridge,freezer,pantry");
             System.out.println("\t Year,Month,Day are all integer values that represent the expiry date");
             selection = input.next();
@@ -262,15 +291,13 @@ public class GroceryApp {
 
             String[] splitValue = selection.split(",");
             String label = splitValue[0];
-            String price = splitValue[1];
             int servings = Integer.parseInt(splitValue[2]);
             StoringMethod storingMethod = StoringMethod.valueOf(splitValue[3]);
 
-            Money moneyUsed = new Money(price);
+            Money moneyUsed = new Money(splitValue[1]);
 
             Perishable newP = new Perishable(label, moneyUsed, servings, storingMethod,
-                    new Date(Integer.parseInt(splitValue[4]),
-                            Integer.parseInt(splitValue[5]) - 1,
+                    new Date(Integer.parseInt(splitValue[4]), Integer.parseInt(splitValue[5]) - 1,
                             Integer.parseInt(splitValue[6])));
             listOfGroceriesG.addGrocery(newP);
             budget.spendBudget(moneyUsed);
@@ -283,6 +310,7 @@ public class GroceryApp {
         System.out.println("\nSelect from:");
         System.out.println("\tadd -> add grocery item");
         System.out.println("\tremove -> remove grocery item");
+        System.out.println("\tgroceries -> get list of grocery items bought");
         System.out.println("\tuse -> use a serving of grocery item");
         System.out.println("\texpiry -> check if an item is expired");
         System.out.println("\tremaining -> get budget remaining");
@@ -308,7 +336,7 @@ public class GroceryApp {
         listOfGroceriesG = new ListOfGroceries();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        todaysDate = new Date(2022, Calendar.OCTOBER,12);
+        todaysDate = new Date(2022, Calendar.OCTOBER, 12);
     }
 
     //modifies: GroceryItem, Budget, Money
@@ -319,6 +347,15 @@ public class GroceryApp {
         System.out.println("Your monthly budget is set to be: $" + command);
     }
 
+    private void printLabelList(List<String> los) {
+        if (los.isEmpty()) {
+            System.out.println("Nothing here :(");
+        } else {
+            for (String s : los) {
+                System.out.println(s);
+            }
+        }
+    }
 }
 
 
