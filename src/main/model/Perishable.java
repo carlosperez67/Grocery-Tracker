@@ -28,6 +28,7 @@ public class Perishable extends GroceryItem {
 
 
     // Requires: Expiry date has not passed
+    // Modifies:
     // Effects: Returns num of days until perishable item is expired
     public int daysUntilExpired(Date todayDate) {
         long time1 = todayDate.getTime();   //gets time in milliseconds

@@ -5,16 +5,17 @@ import java.util.Arrays;
 // Class that represents a monetary value in two forms. One in cents to do easy integer addition
 //   and another form in String that is easy to read
 public class Money {
-    private int amtCents;
-    private String amtDollars;
+    private int amtCents;   // int represnting amount of cents
+    private String amtDollars;  // in format Dollars.xx where xx is cents
 
 
     // Required:  amtCents>= 0
     // Modifies: this
     // Effects: creates money object and stores amtCents and amtDollars
+    //          amtCents and amtDollars always represent the same monetary value
     public Money(int amtCents) {
         this.amtCents = amtCents;
-        this.amtDollars = convertForm(amtCents); //TODO
+        this.amtDollars = convertForm(amtCents);
     }
 
     // Required:  -PriceInDollars in form (dollars.cents), example: 10.25
@@ -22,6 +23,7 @@ public class Money {
     //            - priceInDollars> 0.00
     // Modifies: this
     // Effects: creates money object and stores amtCents and amtDollars
+    //          amtCents and amtDollars always represent the same monetary value
     public Money(String amtDollars) {
         this.amtCents = convertForm(amtDollars);
         this.amtDollars = amtDollars;
@@ -32,6 +34,7 @@ public class Money {
     // Modifies: None
     // Effects: Converts from cent integers to string format of Dollar(s).cent(s).
     //          - example 100 cents -> 1.00
+    //           returns string form of money
     private String convertForm(int cents) {
         int dollars = 0;
         while (cents >= 100) {
@@ -50,6 +53,7 @@ public class Money {
     // Modifies: None
     // Effects: Converts from string format of Dollar(s).cent(s). to cents
     //           example: 1.00 -> 100 cents
+    //           returns money represented as int in cents
     private int convertForm(String value) {
         String[] splitValue = value.split("\\.");
         int dollars = Integer.parseInt(splitValue[0]);
@@ -59,7 +63,7 @@ public class Money {
 
     // Requires: cents>0
     // Modifies: this
-    // Effects: takes in cents and adds value to both amtCents and amtDollars
+    // Effects: takes in cents and adds value to both amtCents and sets amtDollars
     //          to represent the given value
     public void addAmt(int cents) {
         amtCents += cents;
@@ -68,7 +72,7 @@ public class Money {
 
     // Requires: dollars monetary value > 0.00
     // Modifies: this
-    // Effects: takes in string representing monetary value and adds value to both amtCents and amtDollars
+    // Effects: takes in string representing monetary value and adds value to amtCents and sets amtDollars
     //          to represent the given value
     public void addAmt(String dollars) {
         amtCents += convertForm(dollars);

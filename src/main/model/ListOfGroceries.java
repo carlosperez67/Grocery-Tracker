@@ -22,7 +22,7 @@ public class ListOfGroceries {
     //Requires: list of groceries is not empty
     //
     // Modifies:
-    // Effects: returns list of the grocery labels
+    // Effects: returns list<string> of the grocery labels
     public List<String> getListOfGroceryLabels() {
         List<String> loString = new ArrayList<>();
         for (GroceryItem g : listOfGroceries) {
@@ -53,7 +53,7 @@ public class ListOfGroceries {
 
     // Requires: cannot have more than one item with same label
     // Modifies: this
-    // Effects: adds grocery to the home (can add same one multiple times)
+    // Effects: adds grocery to the grocery list
     public void addGrocery(GroceryItem g) {
         listOfGroceries.add(g);
     }
@@ -61,7 +61,6 @@ public class ListOfGroceries {
     // Requires: specified item is already in the list
     // Modifies: this
     // Effects: removes certain grocery item from the list with the given label.
-    //       - if there are two of the exact same label, it will
     public void removeGrocery(String label) {
         for (GroceryItem g : listOfGroceries) {
             if (Objects.equals(label, g.getLabel())) {

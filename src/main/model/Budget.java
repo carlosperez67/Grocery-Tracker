@@ -33,7 +33,7 @@ public class Budget {
     }
 
 
-    // REQUIRES: Money has monetary value >0. m >= amtLeft
+    // REQUIRES: Money(m) has monetary value >0. m <= amtLeft
     // Modifies: this
     // Effects: Subtracts the amount of money m from the budget left and
     //        add the amount represented by m to amtSpent
