@@ -38,7 +38,7 @@ This has led to things going bad and me having to throw them out. Forgetting wha
 - As a user, I want to know how many portions of an item I have left
 - As a user, I want to know what is in my fridge, freezer and/or pantry
 - As a user, I want to know how much is left in my budget
-- -  As a user, I want to know how much of my budget I have already spent
+- As a user, I want to know how much of my budget I have already spent
 
 
 

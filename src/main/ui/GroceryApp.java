@@ -31,7 +31,7 @@ public class GroceryApp {
         boolean keepGoing = true;
         String command;
         initA();
-
+    // from TellerApp
         while (keepGoing) {
             displayWelcome();
             command = input.next().toLowerCase();
@@ -333,6 +333,7 @@ public class GroceryApp {
 
     //modifies:
     // effects: initializes listOfGroceries
+    // modified from TellerApp
     private void initA() {
         listOfGroceriesG = new ListOfGroceries();
         input = new Scanner(System.in);

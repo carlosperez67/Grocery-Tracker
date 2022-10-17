@@ -75,15 +75,5 @@ public class PerishableTest {
         assertTrue(testP.isExpired(testToday));
     }
 
-    // TODO
-//    @Test
-//    public void fuckAround() {
-//
-//        NonPerishable testNP = new NonPerishable("dummy", testMilkPrice,12);
-//        assertEquals(testP.getClass(),testNP.getClass());
-//    }
-
-
-
 }
 
