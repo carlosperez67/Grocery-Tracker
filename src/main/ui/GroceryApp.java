@@ -420,6 +420,8 @@ public class GroceryApp {
 
         jsonWriterGrocery = new JsonWriterGrocery(JSON_STORE);
         jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE);
+        jsonWriterBudget = new JsonWriterBudget(JSON_STORE);
+        jsonReaderBudget = new JsonReaderBudget(JSON_STORE);
     }
 
     //modifies: GroceryItem, Budget, Money
