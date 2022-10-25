@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // Represents grocery items that aren't perishable: example, rice, spices, sugar etc...
 public class NonPerishable extends GroceryItem {
 
@@ -13,6 +15,17 @@ public class NonPerishable extends GroceryItem {
     public NonPerishable(String label, Money price, int servingSize) {
         super(label,price,servingSize);
         this.storingMethod = StoringMethod.pantry;
+    }
+
+    // Taken from JsonSerialization Demo
+    // Effects: creates JSON object to store with null date
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = super.toJson();
+        json.put("expiryDay", -1);
+        json.put("expiryMonth", -1);
+        json.put("expiryYear", -1);
+        return json;
     }
 
 

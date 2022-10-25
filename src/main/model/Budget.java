@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Writable;
+
 // This class represents the monthly budget allowance to be spent on grocery items.
-public class Budget {
+public class Budget implements Writable {
     private Money monthlyBudget;
     private Money amtSpent;
     private Money amtLeft;
@@ -16,6 +19,22 @@ public class Budget {
         this.amtLeft = new Money(monthlyBudget.getAmtCents());
         this.amtSpent = new Money(0);
     }
+
+    //setter
+    public void setAmtSpent(int cents) {
+        this.amtSpent.setAmt(cents);
+    }
+
+    //setter
+    public void setAmtLeft(int cents) {
+        this.amtLeft.setAmt(cents);
+    }
+
+    //setter
+    public void setBudget(int cents) {
+        this.monthlyBudget.setAmt(cents);
+    }
+
 
     //getter
     public Money getAmtSpent() {
@@ -40,5 +59,25 @@ public class Budget {
     public void spendBudget(Money m) {
         amtLeft.subtractAmt(m.getAmtCents());
         amtSpent.addAmt(m.getAmtCents());
+    }
+
+//    @Override
+//    public JSONObject toJason() {
+//        JSONObject json = new JSONObject();
+//        json.put("monthlyBudget", monthlyBudget.getAmtCents());
+//        json.put("amtSpent", amtSpent.getAmtCents());
+//        json.put("amtLeft", amtLeft.getAmtCents());
+//        return json;
+//    }
+
+    // Taken from JsonSerialization Demo
+    // Effects: Creates JSON object to store
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("monthlyBudget", monthlyBudget.getAmtCents());
+        json.put("amtSpent", amtSpent.getAmtCents());
+        json.put("amtLeft", amtLeft.getAmtCents());
+        return json;
     }
 }

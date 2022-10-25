@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 // represents grocery items that are perishable ie have an expiry date, like milk, eggs etc
@@ -43,6 +45,17 @@ public class Perishable extends GroceryItem {
     // Effects: Returns true if item is expired, else false
     public Boolean isExpired(Date todayDate) {
         return expiryDate.before(todayDate);
+    }
+
+    // Taken from JsonSerialization Demo
+    // Effects: creates JSON object to store with date
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = super.toJson();
+        json.put("expiryDay", expiryDate.getDate());
+        json.put("expiryMonth", expiryDate.getMonth());
+        json.put("expiryYear", expiryDate.getYear());
+        return json;
     }
 
 

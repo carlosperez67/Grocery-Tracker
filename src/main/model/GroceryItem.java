@@ -1,10 +1,15 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Writable;
+
+import java.util.Optional;
+
 // This class represents the general(abstract) grocery item that can be bought from a grocery store
-public abstract class GroceryItem {
-    private String label;                 // name of grocery item
-    private Money price;                    // price of grocery item
-    private int servingsLeft;              // represents how many meals this item can make
+public abstract class GroceryItem implements Writable {
+    protected String label;                 // name of grocery item
+    protected Money price;                    // price of grocery item
+    protected int servingsLeft;              // represents how many meals this item can make
     protected StoringMethod storingMethod; // represents where the item will be stored
 
 
@@ -69,6 +74,18 @@ public abstract class GroceryItem {
         } else {
             return false;
         }
+    }
+
+    // Taken from JsonSerialization Demo
+    // Effects: creates JSON object to store
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("label", label);
+        json.put("servingsLeft", servingsLeft);
+        json.put("storingMethod",storingMethod);
+        json.put("price", price.getAmtCents());
+        return json;
     }
 
 }

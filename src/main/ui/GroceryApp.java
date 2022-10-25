@@ -7,18 +7,25 @@ import model.Perishable;
 import model.StoringMethod;
 import model.ListOfGroceries;
 import model.Money;
+import persistance.JsonReaderGrocery;
+import persistance.JsonWriterGrocery;
 
-import java.util.Calendar;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 // Grocery Budget Tracker Application
 public class GroceryApp {
+    // fields taken with inspiration from JsonSerializationDemo
+    private static final String JSON_STORE = "./data/groceries.json";
     private Budget budget;
-    private ListOfGroceries listOfGroceriesG;
+    private ListOfGroceries loG;
     private Scanner input;
-    private Date todaysDate;
+    private Date todayDate;
+    private JsonWriterGrocery jsonWriterGrocery;
+    private JsonReaderGrocery jsonReaderGrocery;
 
     //Effects: runs the Grocery application
     public GroceryApp() {
@@ -27,7 +34,7 @@ public class GroceryApp {
 
     //modifies: this
     // effects: processes user input and commits actions
-    private void runGroceryApp() {
+    public void runGroceryApp() {
         boolean keepGoing = true;
         String command;
         initA();
@@ -55,7 +62,7 @@ public class GroceryApp {
     }
 
     //effects: displays screen asking for monthly budget
-    private void displayWelcome() {
+    public void displayWelcome() {
         System.out.println("\nWelcome to your grocery tracker!");
         System.out.println("Press q at anytime to quit");
         System.out.println("\nWhat is your monthly groceries budget?");
@@ -65,8 +72,8 @@ public class GroceryApp {
     }
 
     // EFFECTS: displays menu of options to user and says today's date
-    private void displayMenu() {
-        System.out.println("\nToday is " + todaysDate);
+    public void displayMenu() {
+        System.out.println("\nToday is " + todayDate);
         System.out.println("\nSelect from:");
         System.out.println("\tadd -> add grocery item");
         System.out.println("\tremove -> remove grocery item");
@@ -76,6 +83,8 @@ public class GroceryApp {
         System.out.println("\tremaining -> get budget remaining");
         System.out.println("\tspent -> get amount spent");
         System.out.println("\tdate -> change current date");
+        System.out.println("\tsave -> save current groceries and budget");
+        System.out.println("\tload -> load past groceries and budget");
 
         System.out.println("\tq -> quit");
     }
@@ -83,31 +92,90 @@ public class GroceryApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand(String command) {
-        if (command.equals("add")) {
-            doAdd();
-        } else if (command.equals("remove")) {
-            doRemove();
-        } else if (command.equals("use")) {
-            doUse();
-        } else if (command.equals("expiry")) {
-            doExpiry();
-        } else if (command.equals("remaining")) {
-            getRemaining();
-        } else if (command.equals("date")) {
-            setDate();
-        } else if (command.equals("spent")) {
-            getSpent();
-        } else if (command.equals("groceries")) {
-            getList();
-        } else {
-            System.out.println("Selection not valid...");
+    @SuppressWarnings("checkstyle:MethodLength")
+    public void processCommand(String command) {
+        switch (command) {
+            case "add":
+                doAdd();
+                break;
+            case "remove":
+                doRemove();
+                break;
+            case "use":
+                doUse();
+                break;
+            case "expiry":
+                doExpiry();
+                break;
+            case "remaining":
+                getRemaining();
+                break;
+            case "date":
+                setDate();
+                break;
+            case "spent":
+                getSpent();
+                break;
+            case "groceries":
+                getList();
+                break;
+            case "save":
+                saveLOG();
+                saveBudget();
+                break;
+            case "load":
+                loadLOG();
+                break;
+            default:
+                System.out.println("Selection not valid...");
+                break;
         }
     }
 
+    // EFFECTS: saves the list of groceries to file
+    private void saveLOG() {
+        try {
+            jsonWriterGrocery.open();
+            jsonWriterGrocery.write(loG);
+            jsonWriterGrocery.close();
+            System.out.println("Saved groceries to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // EFFECTS: saves the budget to file
+    private void saveBudget() {
+        try {
+            jsonWriterGrocery.open();
+            jsonWriterGrocery.write(budget);
+            jsonWriterGrocery.close();
+            System.out.println("Saved budget to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadLOG() {
+        try {
+            loG = jsonReaderGrocery.read();
+            System.out.println("Loaded groceries from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+
+
+
+
+
+
     //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable), Money, Budget
     // Effects: Makes a grocery item and adds it to the list with appropriate specifications
-    private void doAdd() {
+    public void doAdd() {
         if (selectType().equals("np")) {
             addNonPerishable();
         } else {
@@ -123,7 +191,7 @@ public class GroceryApp {
     //Modifies: GroceryList, GroceryItem (NonPerishable), Money, Budget
     // Effects: Makes a non-perishable grocery item and adds it to the list with appropriate specifications
     //           -spends the money from the budget
-    private void addNonPerishable() {
+    public void addNonPerishable() {
         String selection = "";
         // similar code to TellerApp. attributed to TellerApp
         while (selection.equals("")) {
@@ -141,7 +209,7 @@ public class GroceryApp {
             Money moneyUsed = new Money(splitValue[1]);
 
             NonPerishable newNP = new NonPerishable(label, moneyUsed, servings);
-            listOfGroceriesG.addGrocery(newNP);
+            loG.addGrocery(newNP);
             budget.spendBudget(moneyUsed);
             System.out.println("Bought and added " + label + " to the pantry!");
         }
@@ -155,7 +223,7 @@ public class GroceryApp {
     //Modifies: GroceryList, GroceryItem (Perishable), Money, Budget
     // Effects: Makes a perishable grocery item and adds it to the list with appropriate specifications
     //           -spends the money from the budget
-    private void addPerishable() {
+    public void addPerishable() {
         String selection = "";
         // similar code to TellerApp. attributed to TellerApp
         while (selection.equals("")) {
@@ -179,7 +247,7 @@ public class GroceryApp {
             Perishable newP = new Perishable(label, moneyUsed, servings, storingMethod,
                     new Date(Integer.parseInt(splitValue[4]), Integer.parseInt(splitValue[5]) - 1,
                             Integer.parseInt(splitValue[6])));
-            listOfGroceriesG.addGrocery(newP);
+            loG.addGrocery(newP);
             budget.spendBudget(moneyUsed);
             System.out.println("Bought and added " + newP.getLabel() + " to the " + storingMethod.name());
         }
@@ -188,20 +256,20 @@ public class GroceryApp {
     //Requires: Label must exist already in the list
     //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable)
     // Effects: Find a grocery item and removes it from the list
-    private void doRemove() {
+    public void doRemove() {
         String selection = "";
         while (selection.equals("")) {
             System.out.println("What is the label of the item you would like to remove?");
             selection = input.next();
             selection = selection.toLowerCase();
-            listOfGroceriesG.removeGrocery(selection);
+            loG.removeGrocery(selection);
             System.out.println("Removed " + selection);
         }
     }
 
 
     //Effects: Waits for user command and returns the type of grocery item they chose
-    private String selectType() {
+    public String selectType() {
         String selection = "";
         while (!(selection.equals("np") || selection.equals("p"))) {
             System.out.println("np for non perishable");
@@ -217,7 +285,7 @@ public class GroceryApp {
     // Modifies:
     // Effects: prints out the list of labels in the list of grocery items with option of putting in filters based on
     //          location of items
-    private void getList() {
+    public void getList() {
         String selection = "";
         String filter = "";
         while (selection.equals("")) {
@@ -225,18 +293,18 @@ public class GroceryApp {
             System.out.println("\t y or n");
             selection = input.next().toLowerCase();
             if (selection.equals("n")) {
-                printLabelList(listOfGroceriesG.getListOfGroceryLabels());
+                printLabelList(loG.getListOfGroceryLabels());
             } else {
                 while (filter.equals("")) {
                     System.out.println("Which location?");
                     System.out.println("\t fridge(fg) or freezer(fz) or pantry(p)");
                     filter = input.next().toLowerCase();
                     if (filter.equals("fg") || filter.equals("fridge")) {
-                        printLabelList(listOfGroceriesG.getListOfGroceryLabels(StoringMethod.fridge));
+                        printLabelList(loG.getListOfGroceryLabels(StoringMethod.fridge));
                     } else if (filter.equals("fz") || filter.equals("freezer")) {
-                        printLabelList(listOfGroceriesG.getListOfGroceryLabels(StoringMethod.freezer));
+                        printLabelList(loG.getListOfGroceryLabels(StoringMethod.freezer));
                     } else {
-                        printLabelList(listOfGroceriesG.getListOfGroceryLabels(StoringMethod.pantry));
+                        printLabelList(loG.getListOfGroceryLabels(StoringMethod.pantry));
                     }
                 }
 
@@ -250,7 +318,7 @@ public class GroceryApp {
     //          year is of length 4
     //Modifies: Date
     //Effects: refreshes "today's" date
-    private void setDate() {
+    public void setDate() {
         String selection = "";
         int year = 0;
         int month = 0;
@@ -267,33 +335,33 @@ public class GroceryApp {
             day = Integer.parseInt(splitValue[2]);
         }
         // Java's setDate function to an existing date is very finicky, so I chose to create a new date object
-        todaysDate = new Date(year, month - 1, day);
+        todayDate = new Date(year, month - 1, day);
     }
 
     //Requires:
     //Modifies:
     // Effects: prints remaining budget unspent
-    private void getRemaining() {
+    public void getRemaining() {
         System.out.println(budget.getAmtLeft().getAmtDollars());
     }
 
     //Requires:
     //Modifies:
     // Effects: prints amount of budget spent
-    private void getSpent() {
+    public void getSpent() {
         System.out.println(budget.getAmtSpent().getAmtDollars());
     }
 
     //Requires: Label must exist already in the list
     //Modifies: GroceryItem (Perishable or NonPerishable)
     // Effects: Find a grocery item and uses a certain number of servings
-    private void doExpiry() {
+    public void doExpiry() {
         String selection = "";
         while (selection.equals("")) {
             System.out.println("What is the label of the item you would like check?");
             selection = input.next();
             selection = selection.toLowerCase();
-            GroceryItem g1 = listOfGroceriesG.findGrocery(selection);
+            GroceryItem g1 = loG.findGrocery(selection);
 
             Money dummyMoney = new Money(1);
             NonPerishable dummyNP = new NonPerishable("dummy", dummyMoney, 12);
@@ -302,7 +370,7 @@ public class GroceryApp {
                 System.out.println("This is non perishable!");
             } else {
                 Perishable g2 = (Perishable) g1;
-                System.out.println(g2.daysUntilExpired(todaysDate) + " days until expired.");
+                System.out.println(g2.daysUntilExpired(todayDate) + " days until expired.");
             }
         }
     }
@@ -310,14 +378,14 @@ public class GroceryApp {
     //Requires: Label must exist already in the list
     //Modifies: GroceryItem (Perishable or NonPerishable)
     // Effects: Find a grocery item and uses a certain number of servings
-    private void doUse() {
+    public void doUse() {
         String servings = "";
         String selection = "";
         while (selection.equals("")) {
             System.out.println("What is the label of the item you would like to use?");
             selection = input.next();
             selection = selection.toLowerCase();
-            GroceryItem g = listOfGroceriesG.findGrocery(selection);
+            GroceryItem g = loG.findGrocery(selection);
 
             while (servings.equals("")) {
                 System.out.println("How many servings are you using? This item has "
@@ -334,22 +402,25 @@ public class GroceryApp {
     //modifies:
     // effects: initializes listOfGroceries
     // modified from TellerApp
-    private void initA() {
-        listOfGroceriesG = new ListOfGroceries();
+    public void initA() {
+        loG = new ListOfGroceries();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        todaysDate = new Date(2022, Calendar.OCTOBER, 17);
+        todayDate = new Date(2022, 9, 25);
+
+        jsonWriterGrocery = new JsonWriterGrocery(JSON_STORE);
+        jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE);
     }
 
     //modifies: GroceryItem, Budget, Money
     // effects: initializes objects
-    private void initB(String command) {
+    public void initB(String command) {
         Money initialBudgetM = new Money(command);
         budget = new Budget(initialBudgetM);
         System.out.println("Your monthly budget is set to be: $" + command);
     }
 
-    private void printLabelList(List<String> los) {
+    public void printLabelList(List<String> los) {
         if (los.isEmpty()) {
             System.out.println("Nothing here :(");
         } else {

@@ -106,4 +106,10 @@ public class Money {
     public int getAmtCents() {
         return amtCents;
     }
+
+    // setter
+    public void setAmt(int amtCents) {
+        this.amtCents = amtCents;
+        this.amtDollars = convertForm(amtCents);
+    }
 }

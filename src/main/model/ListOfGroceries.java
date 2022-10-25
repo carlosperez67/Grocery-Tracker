@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistance.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 // a list of the groceries at home
-public class ListOfGroceries {
+public class ListOfGroceries implements Writable {
     private List<GroceryItem> listOfGroceries;
 
     //Modifies: this
@@ -81,4 +85,26 @@ public class ListOfGroceries {
         }
         return null;
     }
+
+
+    //Taken from JsonSerializationDemo
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("groceries", groceriesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns groceries in this groceryList as a JSON array
+    private JSONArray groceriesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (GroceryItem g : listOfGroceries) {
+            jsonArray.put(g.toJson());
+        }
+
+        return jsonArray;
+    }
+
+
 }
