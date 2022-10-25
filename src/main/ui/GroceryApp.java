@@ -267,7 +267,7 @@ public class GroceryApp {
             day = Integer.parseInt(splitValue[2]);
         }
         // Java's setDate function to an existing date is very finicky, so I chose to create a new date object
-        todaysDate = new Date(year, month, day);
+        todaysDate = new Date(year, month - 1, day);
     }
 
     //Requires:
@@ -338,7 +338,7 @@ public class GroceryApp {
         listOfGroceriesG = new ListOfGroceries();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        todaysDate = new Date(2022, Calendar.OCTOBER, 12);
+        todaysDate = new Date(2022, Calendar.OCTOBER, 17);
     }
 
     //modifies: GroceryItem, Budget, Money
