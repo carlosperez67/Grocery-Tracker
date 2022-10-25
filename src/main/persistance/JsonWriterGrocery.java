@@ -10,14 +10,11 @@ import java.io.PrintWriter;
 
 // Represents a writer that writes JSON representation of ListOfGroceries to file
 // Taken with much inspiration from JsonSerializationDemo
-public class JsonWriterGrocery extends JsonWriter{
-    private static final int TAB = 4;
-    private PrintWriter writer;
-    private String destination;
+public class JsonWriterGrocery extends JsonWriter {
 
     // EFFECTS: constructs writer to write to destination file
     public JsonWriterGrocery(String destination) {
-        this.destination = destination;
+        super(destination);
     }
 
     // MODIFIES: this
@@ -33,6 +30,5 @@ public class JsonWriterGrocery extends JsonWriter{
         JSONObject json = log.toJson();
         saveToFile(json.toString(TAB));
     }
-
 
 }

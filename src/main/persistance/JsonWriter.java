@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-public abstract class JsonWriter {
+public class JsonWriter {
     protected static final int TAB = 4;
     protected String destination;
-    private PrintWriter writer;
+    protected PrintWriter writer;
 
     public JsonWriter(String destination) {
         this.destination = destination;

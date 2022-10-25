@@ -18,7 +18,7 @@ public class JsonReaderGrocery extends JsonReader {
 
     // EFFECTS: constructs reader to read from source file
     public JsonReaderGrocery(String source) {
-        this.source = source;
+        super(source);
     }
 
     // EFFECTS: reads ListOfGroceries from file and returns it;
@@ -29,25 +29,12 @@ public class JsonReaderGrocery extends JsonReader {
         return parseListOfGroceries(jsonObject);
     }
 
-    // EFFECTS: reads source file as string and returns it
-    private String readFile(String source) throws IOException {
-        StringBuilder contentBuilder = new StringBuilder();
-
-        try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s));
-        }
-
-        return contentBuilder.toString();
-    }
-
     // EFFECTS: parses ListOfGroceries from JSON object and returns it
     private ListOfGroceries parseListOfGroceries(JSONObject jsonObject) {
         ListOfGroceries log = new ListOfGroceries();
         addGroceries(log, jsonObject);
-        addBudget(jsonObject);
         return log;
     }
-
 
 
     // MODIFIES: ListOfGroceries

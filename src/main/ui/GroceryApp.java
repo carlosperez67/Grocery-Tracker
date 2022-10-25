@@ -7,7 +7,9 @@ import model.Perishable;
 import model.StoringMethod;
 import model.ListOfGroceries;
 import model.Money;
+import persistance.JsonReaderBudget;
 import persistance.JsonReaderGrocery;
+import persistance.JsonWriterBudget;
 import persistance.JsonWriterGrocery;
 
 import java.io.FileNotFoundException;
@@ -26,6 +28,8 @@ public class GroceryApp {
     private Date todayDate;
     private JsonWriterGrocery jsonWriterGrocery;
     private JsonReaderGrocery jsonReaderGrocery;
+    private JsonWriterBudget jsonWriterBudget;
+    private JsonReaderBudget jsonReaderBudget;
 
     //Effects: runs the Grocery application
     public GroceryApp() {
@@ -38,7 +42,7 @@ public class GroceryApp {
         boolean keepGoing = true;
         String command;
         initA();
-    // from TellerApp
+        // from TellerApp
         while (keepGoing) {
             displayWelcome();
             command = input.next().toLowerCase();
@@ -92,7 +96,7 @@ public class GroceryApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    @SuppressWarnings("checkstyle:MethodLength")
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void processCommand(String command) {
         switch (command) {
             case "add":
@@ -125,6 +129,7 @@ public class GroceryApp {
                 break;
             case "load":
                 loadLOG();
+                loadBudget();
                 break;
             default:
                 System.out.println("Selection not valid...");
@@ -147,9 +152,9 @@ public class GroceryApp {
     // EFFECTS: saves the budget to file
     private void saveBudget() {
         try {
-            jsonWriterGrocery.open();
-            jsonWriterGrocery.write(budget);
-            jsonWriterGrocery.close();
+            jsonWriterBudget.open();
+            jsonWriterBudget.write(budget);
+            jsonWriterBudget.close();
             System.out.println("Saved budget to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
@@ -157,7 +162,7 @@ public class GroceryApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads ListOfGroceries from file
     private void loadLOG() {
         try {
             loG = jsonReaderGrocery.read();
@@ -167,11 +172,16 @@ public class GroceryApp {
         }
     }
 
-
-
-
-
-
+    // MODIFIES: this
+    // EFFECTS: loads Budget from file
+    private void loadBudget() {
+        try {
+            this.budget = jsonReaderBudget.read();
+            System.out.println("Loaded budget from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
 
     //Modifies: GroceryList, GroceryItem (Perishable or NonPerishable), Money, Budget
     // Effects: Makes a grocery item and adds it to the list with appropriate specifications

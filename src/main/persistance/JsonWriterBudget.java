@@ -17,7 +17,6 @@ public class JsonWriterBudget extends JsonWriter {
         super(destination);
     }
 
-
     // MODIFIES: this
     // EFFECTS: writes JSON representation of Budget to file
     public void write(Budget b) {
