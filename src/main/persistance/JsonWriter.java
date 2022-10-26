@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// class that models all JsonWriters
 public class JsonWriter {
     protected static final int TAB = 4;
     protected String destination;

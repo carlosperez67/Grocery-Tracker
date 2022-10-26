@@ -21,7 +21,8 @@ import java.util.Scanner;
 // Grocery Budget Tracker Application
 public class GroceryApp {
     // fields taken with inspiration from JsonSerializationDemo
-    private static final String JSON_STORE = "./data/groceries.json";
+    private static final String JSON_STORE_G = "./data/groceries.json";
+    private static final String JSON_STORE_B = "./data/budget.json";
     private Budget budget;
     private ListOfGroceries loG;
     private Scanner input;
@@ -45,6 +46,7 @@ public class GroceryApp {
         // from TellerApp
         while (keepGoing) {
             displayWelcome();
+            newTrackerBudget();
             command = input.next().toLowerCase();
             if (command.equals("q")) {
                 keepGoing = false;
@@ -65,10 +67,18 @@ public class GroceryApp {
         System.out.println("\nGoodbye!");
     }
 
+
     //effects: displays screen asking for monthly budget
     public void displayWelcome() {
         System.out.println("\nWelcome to your grocery tracker!");
         System.out.println("Press q at anytime to quit");
+        //System.out.println("Would you like to load a saved tracker?");
+       // System.out.println("y/n");
+
+    }
+
+    //effects: displays screen asking for monthly budget
+    public void newTrackerBudget() {
         System.out.println("\nWhat is your monthly groceries budget?");
         System.out.println("\tUse format dollars.cents");
         System.out.println("\tExample: 1.00");
@@ -143,9 +153,9 @@ public class GroceryApp {
             jsonWriterGrocery.open();
             jsonWriterGrocery.write(loG);
             jsonWriterGrocery.close();
-            System.out.println("Saved groceries to " + JSON_STORE);
+            System.out.println("Saved groceries to " + JSON_STORE_G);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file: " + JSON_STORE_G);
         }
     }
 
@@ -155,9 +165,9 @@ public class GroceryApp {
             jsonWriterBudget.open();
             jsonWriterBudget.write(budget);
             jsonWriterBudget.close();
-            System.out.println("Saved budget to " + JSON_STORE);
+            System.out.println("Saved budget to " + JSON_STORE_B);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file: " + JSON_STORE_B);
         }
     }
 
@@ -166,9 +176,9 @@ public class GroceryApp {
     private void loadLOG() {
         try {
             loG = jsonReaderGrocery.read();
-            System.out.println("Loaded groceries from " + JSON_STORE);
+            System.out.println("Loaded groceries from " + JSON_STORE_G);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("Unable to read from file: " + JSON_STORE_G);
         }
     }
 
@@ -177,9 +187,9 @@ public class GroceryApp {
     private void loadBudget() {
         try {
             this.budget = jsonReaderBudget.read();
-            System.out.println("Loaded budget from " + JSON_STORE);
+            System.out.println("Loaded budget from " + JSON_STORE_B);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("Unable to read from file: " + JSON_STORE_B);
         }
     }
 
@@ -418,10 +428,10 @@ public class GroceryApp {
         input.useDelimiter("\n");
         todayDate = new Date(2022, 9, 25);
 
-        jsonWriterGrocery = new JsonWriterGrocery(JSON_STORE);
-        jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE);
-        jsonWriterBudget = new JsonWriterBudget(JSON_STORE);
-        jsonReaderBudget = new JsonReaderBudget(JSON_STORE);
+        jsonWriterGrocery = new JsonWriterGrocery(JSON_STORE_G);
+        jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE_G);
+        jsonWriterBudget = new JsonWriterBudget(JSON_STORE_B);
+        jsonReaderBudget = new JsonReaderBudget(JSON_STORE_B);
     }
 
     //modifies: GroceryItem, Budget, Money

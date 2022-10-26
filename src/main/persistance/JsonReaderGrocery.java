@@ -5,16 +5,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
-import java.util.stream.Stream;
 
 // Represents a reader that reads ListOfGroceries from JSON data stored in file
 // Taken with much inspiration from JsonSerializationDemo
 public class JsonReaderGrocery extends JsonReader {
-    private String source;
 
     // EFFECTS: constructs reader to read from source file
     public JsonReaderGrocery(String source) {

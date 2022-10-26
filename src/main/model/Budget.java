@@ -61,19 +61,15 @@ public class Budget implements Writable {
         amtSpent.addAmt(m.getAmtCents());
     }
 
-//    @Override
-//    public JSONObject toJason() {
-//        JSONObject json = new JSONObject();
-//        json.put("monthlyBudget", monthlyBudget.getAmtCents());
-//        json.put("amtSpent", amtSpent.getAmtCents());
-//        json.put("amtLeft", amtLeft.getAmtCents());
-//        return json;
-//    }
-
-    // Taken from JsonSerialization Demo
-    // Effects: Creates JSON object to store
     @Override
     public JSONObject toJson() {
+        JSONObject json2 = new JSONObject();
+        json2.put("budget", budgetToJson());
+        return json2;
+    }
+
+    // EFFECTS: adds individual budget to Json
+    private JSONObject budgetToJson() {
         JSONObject json = new JSONObject();
         json.put("monthlyBudget", monthlyBudget.getAmtCents());
         json.put("amtSpent", amtSpent.getAmtCents());

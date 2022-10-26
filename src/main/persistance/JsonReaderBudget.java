@@ -1,20 +1,14 @@
 package persistance;
 
 import model.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
-import java.util.stream.Stream;
 
-// Represents a reader that reads ListOfGroceries from JSON data stored in file
+// Represents a reader that reads Budget from JSON data stored in file
 // Taken with much inspiration from JsonSerializationDemo
 public class JsonReaderBudget extends JsonReader {
-    private String source;
 
     // EFFECTS: constructs reader to read from source file
     public JsonReaderBudget(String source) {
@@ -26,22 +20,17 @@ public class JsonReaderBudget extends JsonReader {
     public Budget read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseBudget(jsonObject);
-    }
-
-    // EFFECTS: parses ListOfGroceries from JSON object and returns it
-    private Budget parseBudget(JSONObject jsonObject) {
         return addBudget(jsonObject);
     }
-
 
     // MODIFIES: Budget
     // EFFECTS: parses Budget from JSON object and loads budget
     private Budget addBudget(JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("groceries");
-        int monthlyBudget = jsonObject.getInt("monthlyBudget");
-        int amtSpent = jsonObject.getInt("amtSpent");
-        int amtLeft = jsonObject.getInt("amtLeft");
+        JSONObject json = jsonObject.getJSONObject("budget");
+        int monthlyBudget = json.getInt("monthlyBudget");
+        int amtSpent = json.getInt("amtSpent");
+        int amtLeft = json.getInt("amtLeft");
+        System.out.println("here");
         Money money = new Money(monthlyBudget);
         Budget budget = new Budget(money);
         budget.setAmtSpent(amtSpent);
@@ -49,5 +38,24 @@ public class JsonReaderBudget extends JsonReader {
         return budget;
     }
 
+    // MODIFIES: ListOfGroceries
+    // EFFECTS: parses GroceryItem from JSON object and adds it to ListOfGrocery
+    private void addGrocery(ListOfGroceries log, JSONObject jsonObject) {
+        String label = jsonObject.getString("label");
+        Money price = new Money(jsonObject.getInt("price"));
+        StoringMethod storingMethod = StoringMethod.valueOf(jsonObject.getString("storingMethod"));
+        int servingsLeft = jsonObject.getInt("servingsLeft");
+
+        if (jsonObject.getInt("expiryDay") == -1) {
+            NonPerishable nonPerishable = new NonPerishable(label, price, servingsLeft);
+            log.addGrocery(nonPerishable);
+        } else {
+            Date d = new Date(jsonObject.getInt("expiryYear"),
+                    jsonObject.getInt("expiryMonth"),
+                    jsonObject.getInt("expiryDay"));
+            Perishable perishable = new Perishable(label, price, servingsLeft, storingMethod, d);
+            log.addGrocery(perishable);
+        }
+    }
 
 }
