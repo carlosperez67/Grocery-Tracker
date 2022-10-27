@@ -1,0 +1,20 @@
+{"groceries": [
+    {
+        "servingsLeft": 1,
+        "price": 199,
+        "storingMethod": "pantry",
+        "expiryMonth": -1,
+        "label": "tuna",
+        "expiryDay": -1,
+        "expiryYear": -1
+    },
+    {
+        "servingsLeft": 12,
+        "price": 599,
+        "storingMethod": "fridge",
+        "expiryMonth": 10,
+        "label": "eggs",
+        "expiryDay": 25,
+        "expiryYear": 2022
+    }
+]}

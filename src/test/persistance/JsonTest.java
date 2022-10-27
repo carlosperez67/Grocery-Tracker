@@ -6,6 +6,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// helper method to test classes inside jsontests
 public class JsonTest {
 
     protected void checkGroceryItem(String label, int price, int servingSize, NonPerishable groceryItem) {
