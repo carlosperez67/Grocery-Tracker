@@ -1,0 +1,20 @@
+{"groceries": [
+    {
+        "servingsLeft": 2,
+        "price": 100,
+        "storingMethod": "pantry",
+        "expiryMonth": -1,
+        "label": "beans",
+        "expiryDay": -1,
+        "expiryYear": -1
+    },
+    {
+        "servingsLeft": 12,
+        "price": 399,
+        "storingMethod": "fridge",
+        "expiryMonth": 10,
+        "label": "milk",
+        "expiryDay": 2,
+        "expiryYear": 2022
+    }
+]}

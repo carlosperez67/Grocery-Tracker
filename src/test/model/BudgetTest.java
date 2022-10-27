@@ -19,6 +19,7 @@ public class BudgetTest {
     @Test
     public void budgetTest() {
         Money m1 = new Money(0);
+        testBudget.setBudget(0);
         assertEquals(testBudgetMoney, testBudget.getMonthlyBudget());
         assertEquals(testBudgetMoney.getAmtCents(), testBudget.getAmtLeft().getAmtCents());
         assertEquals(m1.getAmtCents(), testBudget.getAmtSpent().getAmtCents());

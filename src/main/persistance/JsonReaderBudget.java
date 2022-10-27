@@ -37,25 +37,6 @@ public class JsonReaderBudget extends JsonReader {
         budget.setAmtLeft(amtLeft);
         return budget;
     }
-
-    // MODIFIES: ListOfGroceries
-    // EFFECTS: parses GroceryItem from JSON object and adds it to ListOfGrocery
-    private void addGrocery(ListOfGroceries log, JSONObject jsonObject) {
-        String label = jsonObject.getString("label");
-        Money price = new Money(jsonObject.getInt("price"));
-        StoringMethod storingMethod = StoringMethod.valueOf(jsonObject.getString("storingMethod"));
-        int servingsLeft = jsonObject.getInt("servingsLeft");
-
-        if (jsonObject.getInt("expiryDay") == -1) {
-            NonPerishable nonPerishable = new NonPerishable(label, price, servingsLeft);
-            log.addGrocery(nonPerishable);
-        } else {
-            Date d = new Date(jsonObject.getInt("expiryYear"),
-                    jsonObject.getInt("expiryMonth"),
-                    jsonObject.getInt("expiryDay"));
-            Perishable perishable = new Perishable(label, price, servingsLeft, storingMethod, d);
-            log.addGrocery(perishable);
-        }
-    }
+    
 
 }
