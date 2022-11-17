@@ -227,9 +227,9 @@ public class GuiSplashPage extends JFrame {
         }
     }
 
-    // starts the application
-    public static void main(String[] args) {
-        new GuiSplashPage();
-    }
+//    // starts the application
+//    public static void main(String[] args) {
+//        new GuiSplashPage();
+//    }
 }
 

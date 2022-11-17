@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -561,8 +560,8 @@ public class GuiAlpha extends JFrame {
         dialog.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
-    // starts the application
-    public static void main(String[] args) {
-        new GuiAlpha(null, new Budget(new Money("100.00")));
-    }
+//    // starts the application
+//    public static void main(String[] args) {
+//        new GuiAlpha(null, new Budget(new Money("100.00")));
+//    }
 }
