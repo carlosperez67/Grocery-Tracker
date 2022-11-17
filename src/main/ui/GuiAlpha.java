@@ -461,7 +461,7 @@ public class GuiAlpha extends JFrame {
     }
 
     /**
-     * Represents action to be taken when user is done inputting values for non perishable item
+     * Represents action to be taken when user is done inputting values for non-perishable item
      */
     private class DoneActionNp extends AbstractAction {
 
