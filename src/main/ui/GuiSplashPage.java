@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 
+// class that creates a gui splash page before the main application
 public class GuiSplashPage extends JFrame {
 
     public static final int WIDTH = 500;
@@ -27,6 +28,7 @@ public class GuiSplashPage extends JFrame {
     private static final String JSON_STORE_G = "./data/groceries.json";
     private static final String JSON_STORE_B = "./data/budget.json";
 
+    // Grocery App related objects
     private Budget budget;
     private ListOfGroceries groceries;
     private JsonReaderGrocery jsonReaderGrocery;
@@ -37,7 +39,7 @@ public class GuiSplashPage extends JFrame {
     private JPanel controlPanel;
     private JTextField textField;
 
-
+// Constructor:
     public GuiSplashPage() {
         super("Gui Splash Page");
         initializeFields();
@@ -50,6 +52,7 @@ public class GuiSplashPage extends JFrame {
 
     }
 
+    // Effects: Creates control panel
     public void createControlPanel() {
         controlPanel = new JPanel();
         addButtonPanel();
@@ -59,11 +62,11 @@ public class GuiSplashPage extends JFrame {
             System.out.println("can't create picture");
         }
 
-
-        //controlPanel.add(picture);
         setContentPane(controlPanel);
     }
 
+    // Modifies: this
+    // Effects: reads image from file path and adds it to the control panel
     public void createImage() throws IOException {
         BufferedImage groceryPicture = ImageIO.read(
                 new File("data/images/groceries.jpg"));
@@ -72,7 +75,8 @@ public class GuiSplashPage extends JFrame {
         controlPanel.add(picLabel);
     }
 
-
+    // Modifies: this
+    // Effects: creates the gui that allows user to create a new budget
     private void addBudgetDialog() {
         dialog = new JDialog(this, true);
 
@@ -100,9 +104,8 @@ public class GuiSplashPage extends JFrame {
     }
 
 
-    /**
-     * Helper to add control buttons.
-     */
+    // Modifies: this
+    // Effects: Creates a button panel gui
     private void addButtonPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(2, 1));
@@ -125,6 +128,8 @@ public class GuiSplashPage extends JFrame {
     }
 
 
+    /* Below ALL taken from AlarmSystem */
+
     /**
      * Represents action to be taken when user wants to load from a saved grocery tracker
      */
@@ -143,11 +148,11 @@ public class GuiSplashPage extends JFrame {
         }
     }
 
-    // Below ALL taken from AlarmSystem
+
 
 
     /**
-     * Represents action to be taken when user wants to load from a saved grocery tracker
+     * Represents action to be taken when user is done adding a monthly budget
      */
     private class DoneAction extends AbstractAction {
 
@@ -166,7 +171,7 @@ public class GuiSplashPage extends JFrame {
     }
 
     /**
-     * Represents action to be taken when user wants to load from a saved grocery tracker
+     * Represents action to be taken when user wants to create a new grocery tracker
      */
     private class NewTrackerAction extends AbstractAction {
 
@@ -205,18 +210,16 @@ public class GuiSplashPage extends JFrame {
     }
 
 
-    /**
-     * Helper to centre main application window on desktop
-     */
+    // Modifies: this
+    // Effects: Centres this on screen
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
         this.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
-    /**
-     * Helper to centre dialog frame
-     */
+    // Modifies: this
+    // Effects: Centres given dialog on screen
     private void centreOnScreen(JDialog dialog) {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -233,21 +236,5 @@ public class GuiSplashPage extends JFrame {
         return groceries;
     }
 
-
-    /**
-     * Represents action to be taken when user clicks desktop
-     * to switch focus. (Needed for key handling.)
-     */
-    private class DesktopFocusAction extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            GuiSplashPage.this.requestFocusInWindow();
-        }
-    }
-
-//    // starts the application
-//    public static void main(String[] args) {
-//        new GuiSplashPage();
-//    }
 }
 

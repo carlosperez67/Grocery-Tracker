@@ -13,8 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
+// class representing main gui application AFTER the splashpage
 public class GuiAlpha extends JFrame {
 
     //Constants
