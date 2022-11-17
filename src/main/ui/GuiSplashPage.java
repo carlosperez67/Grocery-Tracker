@@ -11,12 +11,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Date;
 
 // class that creates a gui splash page before the main application
@@ -51,6 +48,21 @@ public class GuiSplashPage extends JFrame {
         setVisible(true);
 
     }
+
+// INITIALIZATION ---------------------------------------------------------------------------------
+
+    // MODIFIES: this
+    // EFFECTS:  creates new ListOfGroceries and sets Budget to null.
+    private void initializeFields() {
+        groceries = new ListOfGroceries();
+        budget = null;
+        Date todayDate = new Date();
+
+        jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE_G);
+        jsonReaderBudget = new JsonReaderBudget(JSON_STORE_B);
+    }
+
+ // GUI CREATION ELEMENTS --------------------------------------------------------------------------
 
     // Effects: Creates control panel
     public void createControlPanel() {
@@ -103,7 +115,6 @@ public class GuiSplashPage extends JFrame {
         dialog.setVisible(true);
     }
 
-
     // Modifies: this
     // Effects: Creates a button panel gui
     private void addButtonPanel() {
@@ -116,18 +127,8 @@ public class GuiSplashPage extends JFrame {
     }
 
 
-    // MODIFIES: this
-    // EFFECTS:  creates new ListOfGroceries and sets Budget to null.
-    private void initializeFields() {
-        groceries = new ListOfGroceries();
-        budget = null;
-        Date todayDate = new Date();
 
-        jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE_G);
-        jsonReaderBudget = new JsonReaderBudget(JSON_STORE_B);
-    }
-
-
+// CLASSES FOR BUTTON ACTIONS ---------------------------------------------------------------------------
     /* Below ALL taken from AlarmSystem */
 
     /**
@@ -147,9 +148,6 @@ public class GuiSplashPage extends JFrame {
             new GuiAlpha(groceries, budget);
         }
     }
-
-
-
 
     /**
      * Represents action to be taken when user is done adding a monthly budget
@@ -186,6 +184,9 @@ public class GuiSplashPage extends JFrame {
 
         }
     }
+
+
+ // MISC HELPER METHODS ----------------------------------------------------------------------
 
     // MODIFIES: this
     // EFFECTS: loads ListOfGroceries from file

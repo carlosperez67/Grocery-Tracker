@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-// class representing main gui application AFTER the splashpage
+// class representing main gui application AFTER the splash page
 public class GuiAlpha extends JFrame {
 
     //Constants
@@ -60,7 +60,7 @@ public class GuiAlpha extends JFrame {
         setVisible(true);
     }
 
-
+// Initialization ---------------------------------------------------------------------------------------
     // Modifies: this
     // Effects: Initializes fields
     public void initializeFields(ListOfGroceries groceries, Budget budget) {
@@ -82,6 +82,7 @@ public class GuiAlpha extends JFrame {
         init();
     }
 
+    // Modifies: this
     // Effects initializing text fields
     public void init() {
         textFieldA = new JTextField(20);
@@ -93,6 +94,33 @@ public class GuiAlpha extends JFrame {
         textFieldG = new JTextField(20);
     }
 
+// Gui Creation
+
+    // Modifies: this
+    // Effects: Create gui to create non-perishable
+    private void nonPerishableGui() {
+        dialog = new JDialog(this, true);
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+
+        JPanel panelLabel = new JPanel();
+        JPanel panelPrice = new JPanel();
+        JPanel panelServings = new JPanel();
+
+        panel.add(createLittlePanelHelper(textFieldA, panelLabel, "What is the label of this perishable item?",
+                "Alphanumeric characters only"));
+        panel.add(createLittlePanelHelper(textFieldB, panelPrice, "What is the price of this perishable item?",
+                "Dollar.Cent format. (integers only)"));
+        panel.add(createLittlePanelHelper(textFieldC, panelServings, "How many servings in this perishable item?",
+                "integer greater than 0"));
+
+        JButton doneNp = new JButton(new DoneActionNp());
+        panel.add(doneNp);
+
+        dialog.add(panel);
+        dialog.pack();
+        dialog.setVisible(true);
+        centreOnScreen(dialog);
+    }
 
     // Modifies: This
     // Effects: Adds button panel
@@ -107,19 +135,9 @@ public class GuiAlpha extends JFrame {
         this.add(buttonPanel, BorderLayout.WEST);
     }
 
-    // Class to Remove something from the grocery list
-    private class ShowAction extends AbstractAction {
 
-        ShowAction() {
-            super("Display Grocery Items");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            chooseDisplay();
-        }
-    }
-
+    // Modifies: this
+    // Effects: creates display where the user can choose what they want displayed
     private void chooseDisplay() {
         dialog = new JDialog(this, true);
 
@@ -145,21 +163,8 @@ public class GuiAlpha extends JFrame {
 
     }
 
-    /**
-     * Represents action to be taken when user wants to add a grocery item to the grocery tracker
-     */
-    private class ShowAllAction extends AbstractAction {
-
-        ShowAllAction() {
-            super("Display all Grocery Items");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            displayGroceries(groceries.getListOfGroceryLabels());
-        }
-    }
-
+    // Modifies: this
+    // Effects: displays the grocery labels given in the gui
     public void displayGroceries(List<String> groceryLabelList) {
         dialog = new JDialog(this, true);
 
@@ -183,67 +188,6 @@ public class GuiAlpha extends JFrame {
 
     }
 
-
-    /**
-     * Represents action to be taken when user wants to add a grocery item to the grocery tracker
-     */
-    private class ShowPantryAction extends AbstractAction {
-
-        ShowPantryAction() {
-            super("Display all groceries in pantry");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            displayGroceries(groceries.getListOfGroceryLabels(StoringMethod.pantry));
-        }
-    }
-
-    /**
-     * Represents action to be taken when user wants to add a grocery item to the grocery tracker
-     */
-    private class ShowFridgeAction extends AbstractAction {
-
-        ShowFridgeAction() {
-            super("Display all groceries in fridge");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            displayGroceries(groceries.getListOfGroceryLabels(StoringMethod.fridge));
-        }
-    }
-
-    /**
-     * Represents action to be taken when user wants to add a grocery item to the grocery tracker
-     */
-    private class ShowFreezerAction extends AbstractAction {
-
-        ShowFreezerAction() {
-            super("Display all groceries in freezer");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            displayGroceries(groceries.getListOfGroceryLabels(StoringMethod.freezer));
-        }
-    }
-
-    /**
-     * Represents action to be taken when user wants to add a grocery item to the grocery tracker
-     */
-    private class AddAction extends AbstractAction {
-
-        AddAction() {
-            super("Add new grocery item");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            doAdd();
-        }
-    }
-
     // Requires: The user input to be in correct format
     // Modifies: this
     // Effects: adds given user grocery item to groceries
@@ -251,7 +195,7 @@ public class GuiAlpha extends JFrame {
         chooseP();
     }
 
-    //Modifies:
+    //Modifies: this
     //Effects: Creates Gui so user can choose between perishable and non-perishable
     private void chooseP() {
         dialog = new JDialog(this, true);
@@ -273,7 +217,6 @@ public class GuiAlpha extends JFrame {
         dialog.setVisible(true);
     }
 
-
     // modifies: this
     // Effects: Create gui to create new perishable item
     public void perishableGui() {
@@ -291,6 +234,8 @@ public class GuiAlpha extends JFrame {
 
     }
 
+
+ // GUI HELPER METHODS   --------------------------------------------------------------------
     // Effects: helper to create gui
     public JPanel createBiggerPanelHelper(JPanel pl) {
         JPanel panelLabel = new JPanel();
@@ -326,178 +271,6 @@ public class GuiAlpha extends JFrame {
 
         return panel;
     }
-
-    /**
-     * Represents action to be taken when user wants to add a perishable grocery item to the grocery tracker
-     */
-    private class PerishableAction extends AbstractAction {
-
-        PerishableAction() {
-            super("Perishable");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            perishableGui();
-        }
-    }
-
-    /**
-     * Represents action to be taken when user is done inputting values for perishable item
-     */
-    private class DoneActionP extends AbstractAction {
-
-        DoneActionP() {
-            super("Done");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            String textFieldValueA = textFieldA.getText();
-            String textFieldValueB = textFieldB.getText();
-            String textFieldValueC = textFieldC.getText();
-            String textFieldValueD = textFieldD.getText();
-            String textFieldValueE = textFieldE.getText();
-            String textFieldValueF = textFieldF.getText();
-            String textFieldValueG = textFieldG.getText();
-
-            int servings = Integer.parseInt(textFieldValueC);
-            StoringMethod storingMethod = StoringMethod.valueOf(textFieldValueD);
-            Money moneyUsed = new Money(textFieldValueB);
-
-            Perishable newP = new Perishable(textFieldValueA, moneyUsed, servings, storingMethod,
-                    new Date(Integer.parseInt(textFieldValueE), Integer.parseInt(textFieldValueF) - 1,
-                            Integer.parseInt(textFieldValueG)));
-
-            groceries.addGrocery(newP);
-            dialog.setVisible(false);
-            textArea = new JTextArea("Added " + textFieldValueA + " to the list of groceries!");
-            add(textArea);
-            textArea.setEditable(false);
-        }
-    }
-
-    /**
-     * Represents action to be taken when user is done inputting values for perishable item
-     */
-    private class DoneActionNp extends AbstractAction {
-
-        DoneActionNp() {
-            super("Done");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            String textFieldValueA = textFieldA.getText();
-            String textFieldValueB = textFieldB.getText();
-            String textFieldValueC = textFieldC.getText();
-
-            int servings = Integer.parseInt(textFieldValueC);
-            Money moneyUsed = new Money(textFieldValueB);
-
-            NonPerishable newNp = new NonPerishable(textFieldValueA, moneyUsed, servings);
-
-            groceries.addGrocery(newNp);
-            dialog.setVisible(false);
-            textArea = new JTextArea("Added " + textFieldValueA + " to the list of groceries!");
-            add(textArea);
-            textArea.setEditable(false);
-
-            resetTextFields();
-        }
-    }
-
-    public void resetTextFields() {
-        textFieldA.setText("");
-        textFieldB.setText("");
-        textFieldC.setText("");
-        textFieldD.setText("");
-        textFieldE.setText("");
-        textFieldF.setText("");
-        textFieldG.setText("");
-    }
-
-    /**
-     * Represents action to be taken when user wants to add a non-perishable grocery item to the grocery tracker
-     */
-    private class NonPerishableAction extends AbstractAction {
-
-        NonPerishableAction() {
-            super("Non Perishable");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            nonPerishableGui();
-        }
-    }
-
-    // Create gui to create non perishable
-    private void nonPerishableGui() {
-        dialog = new JDialog(this, true);
-        JPanel panel = new JPanel(new GridLayout(4, 2));
-
-        JPanel panelLabel = new JPanel();
-        JPanel panelPrice = new JPanel();
-        JPanel panelServings = new JPanel();
-
-        panel.add(createLittlePanelHelper(textFieldA, panelLabel, "What is the label of this perishable item?",
-                "Alphanumeric characters only"));
-        panel.add(createLittlePanelHelper(textFieldB, panelPrice, "What is the price of this perishable item?",
-                "Dollar.Cent format. (integers only)"));
-        panel.add(createLittlePanelHelper(textFieldC, panelServings, "How many servings in this perishable item?",
-                "integer greater than 0"));
-
-        JButton doneNp = new JButton(new DoneActionNp());
-        panel.add(doneNp);
-
-        dialog.add(panel);
-        dialog.pack();
-        dialog.setVisible(true);
-        centreOnScreen(dialog);
-    }
-
-    /**
-     * Represents action to be taken when user wants to save the grocery tracker
-     */
-    private class SaveAction extends AbstractAction {
-
-        SaveAction() {
-            super("Save Grocery Tracker");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            textArea = new JTextArea("Saved Grocery Tracker to memory!");
-            add(textArea);
-            textArea.setEditable(false);
-            saveBudget();
-            saveLOG();
-        }
-    }
-
-    /**
-     * Represents action to be taken when user wants to load from a saved grocery tracker
-     */
-    private class LoadAction extends AbstractAction {
-
-        LoadAction() {
-            super("Load Existing Grocery Tracker");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            textArea = new JTextArea("Loaded Saved Grocery Tracker from memory!");
-            add(textArea);
-            textArea.setEditable(false);
-
-            loadLOG();
-            loadBudget();
-
-            add(textArea);
-        }
-    }
-
 
     // HELPER FUNCTIONS -------------------------------------------------------------------------
 
@@ -565,8 +338,245 @@ public class GuiAlpha extends JFrame {
         dialog.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
-//    // starts the application
-//    public static void main(String[] args) {
-//        new GuiAlpha(null, new Budget(new Money("100.00")));
-//    }
+    // Modifies: this
+    // Effects: resets text fields to empty after inputs
+    public void resetTextFields() {
+        textFieldA.setText("");
+        textFieldB.setText("");
+        textFieldC.setText("");
+        textFieldD.setText("");
+        textFieldE.setText("");
+        textFieldF.setText("");
+        textFieldG.setText("");
+    }
+
+
+    // Classes For Button Actions ----------------------------------------------------------------------
+
+    // TAKEN FROM ALARM SYSTEM
+
+
+    /**
+     * Represents action to be taken when user wants to save the grocery tracker
+     */
+    private class SaveAction extends AbstractAction {
+
+        SaveAction() {
+            super("Save Grocery Tracker");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            textArea = new JTextArea("Saved Grocery Tracker to memory!");
+            add(textArea);
+            textArea.setEditable(false);
+            saveBudget();
+            saveLOG();
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to load from a saved grocery tracker
+     */
+    private class LoadAction extends AbstractAction {
+
+        LoadAction() {
+            super("Load Existing Grocery Tracker");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            textArea = new JTextArea("Loaded Saved Grocery Tracker from memory!");
+            add(textArea);
+            textArea.setEditable(false);
+
+            loadLOG();
+            loadBudget();
+
+            add(textArea);
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to add a non-perishable grocery item to the grocery tracker
+     */
+    private class NonPerishableAction extends AbstractAction {
+
+        NonPerishableAction() {
+            super("Non Perishable");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            nonPerishableGui();
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to add a perishable grocery item to the grocery tracker
+     */
+    private class PerishableAction extends AbstractAction {
+
+        PerishableAction() {
+            super("Perishable");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            perishableGui();
+        }
+    }
+
+    /**
+     * Represents action to be taken when user is done inputting values for perishable item
+     */
+    private class DoneActionP extends AbstractAction {
+
+        DoneActionP() {
+            super("Done");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            String textFieldValueA = textFieldA.getText();
+            String textFieldValueB = textFieldB.getText();
+            String textFieldValueC = textFieldC.getText();
+            String textFieldValueD = textFieldD.getText();
+            String textFieldValueE = textFieldE.getText();
+            String textFieldValueF = textFieldF.getText();
+            String textFieldValueG = textFieldG.getText();
+
+            int servings = Integer.parseInt(textFieldValueC);
+            StoringMethod storingMethod = StoringMethod.valueOf(textFieldValueD);
+            Money moneyUsed = new Money(textFieldValueB);
+
+            Perishable newP = new Perishable(textFieldValueA, moneyUsed, servings, storingMethod,
+                    new Date(Integer.parseInt(textFieldValueE), Integer.parseInt(textFieldValueF) - 1,
+                            Integer.parseInt(textFieldValueG)));
+
+            groceries.addGrocery(newP);
+            dialog.setVisible(false);
+            textArea = new JTextArea("Added " + textFieldValueA + " to the list of groceries!");
+            add(textArea);
+            textArea.setEditable(false);
+        }
+    }
+
+    /**
+     * Represents action to be taken when user is done inputting values for non perishable item
+     */
+    private class DoneActionNp extends AbstractAction {
+
+        DoneActionNp() {
+            super("Done");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            String textFieldValueA = textFieldA.getText();
+            String textFieldValueB = textFieldB.getText();
+            String textFieldValueC = textFieldC.getText();
+
+            int servings = Integer.parseInt(textFieldValueC);
+            Money moneyUsed = new Money(textFieldValueB);
+
+            NonPerishable newNp = new NonPerishable(textFieldValueA, moneyUsed, servings);
+
+            groceries.addGrocery(newNp);
+            dialog.setVisible(false);
+            textArea = new JTextArea("Added " + textFieldValueA + " to the list of groceries!");
+            add(textArea);
+            textArea.setEditable(false);
+
+            resetTextFields();
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants display all groceries in the pantry
+     */
+    private class ShowPantryAction extends AbstractAction {
+
+        ShowPantryAction() {
+            super("Display all groceries in pantry");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            displayGroceries(groceries.getListOfGroceryLabels(StoringMethod.pantry));
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to display all groceries in the fridge
+     */
+    private class ShowFridgeAction extends AbstractAction {
+
+        ShowFridgeAction() {
+            super("Display all groceries in fridge");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            displayGroceries(groceries.getListOfGroceryLabels(StoringMethod.fridge));
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to display all groceries in the freezer
+     */
+    private class ShowFreezerAction extends AbstractAction {
+
+        ShowFreezerAction() {
+            super("Display all groceries in freezer");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            displayGroceries(groceries.getListOfGroceryLabels(StoringMethod.freezer));
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to add a grocery item to the grocery tracker
+     */
+    private class AddAction extends AbstractAction {
+
+        AddAction() {
+            super("Add new grocery item");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            doAdd();
+        }
+    }
+
+    /**
+     * Represents action to be taken when user wants to display all grocery items
+     */
+    private class ShowAllAction extends AbstractAction {
+
+        ShowAllAction() {
+            super("Display all Grocery Items");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            displayGroceries(groceries.getListOfGroceryLabels());
+        }
+    }
+
+    /** Class to show all groceries added **/
+    private class ShowAction extends AbstractAction {
+
+        ShowAction() {
+            super("Display Grocery Items");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            chooseDisplay();
+        }
+    }
 }
