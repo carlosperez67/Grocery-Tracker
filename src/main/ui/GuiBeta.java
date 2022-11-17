@@ -2,16 +2,14 @@ package ui;
 
 import model.Budget;
 import model.ListOfGroceries;
-import ui.buttons.Button;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
-public class Gui extends JFrame {
+public class GuiBeta extends JFrame {
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 700;
@@ -21,7 +19,7 @@ public class Gui extends JFrame {
     private JDesktopPane desktop;
     private JInternalFrame controlPanel;
 
-    public Gui() {
+    public GuiBeta() {
         initializeFields();
 
         desktop = new JDesktopPane();
@@ -145,12 +143,12 @@ public class Gui extends JFrame {
     private class DesktopFocusAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Gui.this.requestFocusInWindow();
+            GuiBeta.this.requestFocusInWindow();
         }
     }
 
     // starts the application
     public static void main(String[] args) {
-        new Gui();
+        new GuiBeta();
     }
 }

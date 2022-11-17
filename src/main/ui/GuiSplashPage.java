@@ -3,23 +3,19 @@ package ui;
 
 import model.Budget;
 import model.ListOfGroceries;
+import model.Money;
 import persistance.JsonReaderBudget;
 import persistance.JsonReaderGrocery;
-import persistance.JsonWriterBudget;
-import persistance.JsonWriterGrocery;
-import ui.buttons.Button;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Scanner;
 
-public class GuiSplashPage extends JFrame implements ActionListener {
+public class GuiSplashPage extends JFrame {
 
     public static final int WIDTH = 500;
     public static final int HEIGHT = 500;
@@ -29,85 +25,62 @@ public class GuiSplashPage extends JFrame implements ActionListener {
 
     private Budget budget;
     private ListOfGroceries groceries;
-    private Scanner input;
-    private Date todayDate;
-    private JsonWriterGrocery jsonWriterGrocery;
     private JsonReaderGrocery jsonReaderGrocery;
-    private JsonWriterBudget jsonWriterBudget;
     private JsonReaderBudget jsonReaderBudget;
+    private JDialog dialog;
 
-    private JDesktopPane desktop;
-    private JFrame controlPanel;
-    private JPanel budgetPanel;
-    private JFrame frame;
-
+    // New Things I NEED
+    private JPanel controlPanel;
     private JTextField textField;
 
+
     public GuiSplashPage() {
+        super("Gui Splash Page");
         initializeFields();
+        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        centreOnScreen();
+        createControlPanel();
+        //createBudgetPanel();
+        setVisible(true);
 
-        frame = new JFrame();
-        frame.setSize(WIDTH / 2, HEIGHT / 2);
-
-        budgetPanel = new JPanel();
-        budgetPanel.setLayout(new GridLayout(1, 1));
-
-        // addTextBox();
-//        budgetPanel.setVisible(true);
-//
-//        JPanel textPanel = new JPanel();
-//        textField = new JTextField(20);
-//        textField.setToolTipText("Format in Dollars.Cents");
-//        textPanel.add(textField);
-//        budgetPanel.add(textField);
-
-        frame.add(budgetPanel);
-
-        controlPanel = new JFrame();
-        controlPanel.setLayout(new BorderLayout());
-        addButtonPanel();
-        controlPanel.pack();
-        controlPanel.setVisible(true);
-        frame.add(budgetPanel);
-
-        //frame.setVisible(true);
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        centreOnScreen(frame);
-
-        // ------------------------------------------------
-
-//        JPanel panel = new JPanel(new GridLayout(1,0));
-//        panel.add(textField);
-//
-//
-//
-//        JFrame frame = new JFrame();
-//        frame.setContentPane(panel);
-////        desktop.add(textField);
-//        //frame.add(textField, BorderLayout.CENTER);
-//        frame.setSize(200,200);
-//        frame.setVisible(true);
-//        frame.pack();
-//
-//
-//        controlPanel.add(textField);
-//
-//        //desktop.add(textField);
-//        setContentPane(desktop);
-//        setTitle("Options");
-//        setSize(WIDTH, HEIGHT);
-//
-//        addButtonPanel();
-//
-//        controlPanel.pack();
-//        controlPanel.setVisible(true);
-//        desktop.add(controlPanel);
-//
-//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        centreOnScreen();
-//        setVisible(true);
     }
+
+    public void createControlPanel() {
+        controlPanel = new JPanel();
+        addButtonPanel();
+        setContentPane(controlPanel);
+    }
+
+
+
+
+    private void addBudgetDialog() {
+        dialog = new JDialog(this, true);
+
+        // create panel at the bottom
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Enter Monthly Budget");
+        textField = new JTextField(20);
+        textField.setToolTipText("Format: 'dollars.cents' where dollars and cents are integers");
+        JButton done = new JButton(new DoneAction());
+        panel.add(label); // Components Added using Flow Layout
+        panel.add(textField);
+        panel.add(done);
+
+        // Text Area at the Center
+        JTextArea textArea = new JTextArea("Welcome to your new Grocery Tracker! Please input your grocery budget"
+                + " for each month so I can help you manage your grocery spending.");
+        textArea.setEditable(false);
+
+        dialog.add(BorderLayout.SOUTH, panel);
+        dialog.add(BorderLayout.CENTER, textArea);
+        dialog.pack();
+
+        centreOnScreen(dialog);
+        dialog.setVisible(true);
+    }
+
 
     /**
      * Helper to add control buttons.
@@ -121,41 +94,16 @@ public class GuiSplashPage extends JFrame implements ActionListener {
         controlPanel.add(buttonPanel, BorderLayout.WEST);
     }
 
-    /**
-     * Helper to add text box
-     */
-    private void addTextBox() {
-        JPanel textPanel = new JPanel();
-        textPanel.setLayout(new GridLayout(1, 1));
-        textField = new JTextField(20);
-        //textField.addActionListener();
-        textField.setToolTipText("Please enter some text here");
-        textPanel.add(textField);
-
-
-        budgetPanel.add(textPanel);
-    }
-
 
     // MODIFIES: this
     // EFFECTS:  creates new ListOfGroceries and sets Budget to null.
     private void initializeFields() {
         groceries = new ListOfGroceries();
         budget = null;
+        Date todayDate = new Date();
 
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-        todayDate = new Date();
-
-        jsonWriterGrocery = new JsonWriterGrocery(JSON_STORE_G);
         jsonReaderGrocery = new JsonReaderGrocery(JSON_STORE_G);
-        jsonWriterBudget = new JsonWriterBudget(JSON_STORE_B);
         jsonReaderBudget = new JsonReaderBudget(JSON_STORE_B);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 
 
@@ -170,15 +118,34 @@ public class GuiSplashPage extends JFrame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent evt) {
-            // TODO (Create load button functionality)
             loadLOG();
             loadBudget();
             setVisible(false);
-            new Gui();
+            new GuiAlpha(groceries, budget);
         }
     }
 
     // Below ALL taken from AlarmSystem
+
+
+    /**
+     * Represents action to be taken when user wants to load from a saved grocery tracker
+     */
+    private class DoneAction extends AbstractAction {
+
+        DoneAction() {
+            super("Done");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            String textFieldValue = textField.getText();
+            Money initialBudgetMoney = new Money(textFieldValue);
+            budget = new Budget(initialBudgetMoney);
+            dialog.setVisible(false);
+            new GuiAlpha(groceries, budget);
+        }
+    }
 
     /**
      * Represents action to be taken when user wants to load from a saved grocery tracker
@@ -191,7 +158,8 @@ public class GuiSplashPage extends JFrame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent evt) {
-            // TODO (Create new tracker button functionality)
+            addBudgetDialog();
+            setVisible(false);
 
         }
     }
@@ -222,11 +190,31 @@ public class GuiSplashPage extends JFrame implements ActionListener {
     /**
      * Helper to centre main application window on desktop
      */
-    private void centreOnScreen(JFrame jframe) {
+    private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
-        jframe.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
+        this.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
+
+    /**
+     * Helper to centre dialog frame
+     */
+    private void centreOnScreen(JDialog dialog) {
+        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        dialog.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
+    }
+
+    //getter
+    public Budget getBudget() {
+        return budget;
+    }
+
+    //getter
+    public ListOfGroceries getGroceries() {
+        return groceries;
+    }
+
 
     /**
      * Represents action to be taken when user clicks desktop
