@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 
 public class GuiSplashPage extends JFrame {
@@ -52,25 +53,23 @@ public class GuiSplashPage extends JFrame {
     public void createControlPanel() {
         controlPanel = new JPanel();
         addButtonPanel();
-        JLabel picture = null;
         try {
-            picture = createImage();
+            createImage();
         } catch (IOException e) {
             System.out.println("can't create picture");
         }
 
 
-        controlPanel.add(picture);
+        //controlPanel.add(picture);
         setContentPane(controlPanel);
     }
 
-    public JLabel createImage() throws IOException {
+    public void createImage() throws IOException {
         BufferedImage groceryPicture = ImageIO.read(
-                new File("https://github.students.cs.ubc.ca"
-                        + "/CPSC210-2022W-T1/project_y1c9y/blob/97f29d09d0a3d93f7956e146895eb2c33fdaaaac"
-                        + "/data/images/groceries.jpg"));
+                new File("data/images/groceries.jpg"));
 
-        return new JLabel(new ImageIcon(groceryPicture));
+        JLabel picLabel = new JLabel(new ImageIcon(groceryPicture));
+        controlPanel.add(picLabel);
     }
 
 
