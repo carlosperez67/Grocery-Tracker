@@ -64,7 +64,12 @@ public class GuiAlpha extends JFrame {
     // Modifies: this
     // Effects: Initializes fields
     public void initializeFields(ListOfGroceries groceries, Budget budget) {
-        this.groceries = Objects.requireNonNullElseGet(groceries, ListOfGroceries::new);
+
+        if (groceries == null) {
+            this.groceries = new ListOfGroceries();
+        } else {
+            this.groceries = groceries;
+        }
 
         this.budget = budget;
         Date date = new Date();
