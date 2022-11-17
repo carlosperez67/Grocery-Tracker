@@ -320,18 +320,16 @@ public class GuiAlpha extends JFrame {
         }
     }
 
-    /**
-     * Helper to centre main application window on desktop
-     */
+   // Modifies: this
+    // Effects: centres this on screen
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
         this.setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
-    /**
-     * Helper to centre dialog frame
-     */
+    // Modifies: this
+    // Effects: centres given dialog on screen
     private void centreOnScreen(JDialog dialog) {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
