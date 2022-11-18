@@ -3,7 +3,6 @@ package model;
 import org.json.JSONObject;
 import persistance.Writable;
 
-import java.util.Optional;
 
 // This class represents the general(abstract) grocery item that can be bought from a grocery store
 public abstract class GroceryItem implements Writable {
