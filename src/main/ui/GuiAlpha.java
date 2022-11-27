@@ -83,7 +83,6 @@ public class GuiAlpha extends JFrame {
     }
 
     private void printLog() {
-        System.out.println("Ended");
         for (Event ev : EventLog.getInstance()) {
             System.out.println(ev.getDescription());
             System.out.println("\n");
