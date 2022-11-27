@@ -34,6 +34,7 @@ public class ListOfGroceries implements Writable {
         for (GroceryItem g : listOfGroceries) {
             loString.add(g.getLabel());
         }
+        EventLog.getInstance().logEvent(new Event("Displayed labels of all items."));
         return loString;
     }
 
@@ -48,6 +49,8 @@ public class ListOfGroceries implements Writable {
                 loString.add(g.getLabel());
             }
         }
+        EventLog.getInstance().logEvent(new Event("Displayed labels of items located in "
+                + ltn.toString() + "."));
         return loString;
     }
 
@@ -63,7 +66,7 @@ public class ListOfGroceries implements Writable {
     public void addGrocery(GroceryItem g) {
         listOfGroceries.add(g);
         EventLog.getInstance().logEvent(new Event("Added " + g.getLabel()
-                + "to " + g.getStoringMethod().toString() + "."));
+                + " to " + g.getStoringMethod().toString() + "."));
 
     }
 

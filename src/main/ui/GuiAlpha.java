@@ -56,28 +56,38 @@ public class GuiAlpha extends JFrame {
     public GuiAlpha(ListOfGroceries groceries, Budget budget) {
         super("Grocery App");
         setSize(WIDTH, HEIGHT);
-        // TODO These are changes
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         initializeFields(groceries, budget);
-        closeWindowFunc();
+        actionWhenExit();
         addButtonPanel();
         centreOnScreen();
         setVisible(true);
     }
 
-    public void closeWindowFunc() {
-        WindowListener exitListener = new WindowAdapter() {
+
+    public void actionWhenExit() {
+        WindowListener listener = new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
-                System.out.println("Ended");
-                for (Event ev : EventLog.getInstance()) {
-                    System.out.println(ev.getDescription());
-                    System.out.println("\n");
-                }
-                System.exit(0);
+            public void windowClosing(WindowEvent we) {
+                exitAction();
             }
         };
+        this.addWindowListener(listener);
+    }
+
+    public void exitAction() {
+        this.setVisible(false);
+        this.dispose();
+        printLog();
+    }
+
+    private void printLog() {
+        System.out.println("Ended");
+        for (Event ev : EventLog.getInstance()) {
+            System.out.println(ev.getDescription());
+            System.out.println("\n");
+        }
     }
 
 
