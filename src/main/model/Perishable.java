@@ -1,5 +1,7 @@
 package model;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -21,6 +23,7 @@ public class Perishable extends GroceryItem {
         super(label, price, servingSize);
         this.storingMethod = storingMethod;
         this.expiryDate = expiryDate;
+        EventLog.getInstance().logEvent(new Event("Created new perishable item: " + label + "."));
     }
 
     // getter

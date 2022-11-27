@@ -1,5 +1,7 @@
 package persistance;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import model.Budget;
 import org.json.JSONObject;
 
@@ -16,6 +18,7 @@ public class JsonWriterBudget extends JsonWriter {
     // MODIFIES: this
     // EFFECTS: writes JSON representation of Budget to file
     public void write(Budget b) {
+        EventLog.getInstance().logEvent(new Event("Saved budget data to JSON."));
         JSONObject json = b.toJson();
         saveToFile(json.toString(TAB));
     }

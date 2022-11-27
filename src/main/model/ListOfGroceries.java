@@ -1,5 +1,7 @@
 package model;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistance.Writable;
@@ -60,6 +62,9 @@ public class ListOfGroceries implements Writable {
     // Effects: adds grocery to the grocery list
     public void addGrocery(GroceryItem g) {
         listOfGroceries.add(g);
+        EventLog.getInstance().logEvent(new Event("Added " + g.getLabel()
+                + "to " + g.getStoringMethod().toString() + "."));
+
     }
 
     // Requires: specified item is already in the list

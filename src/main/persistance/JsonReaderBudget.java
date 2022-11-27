@@ -1,5 +1,7 @@
 package persistance;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import model.*;
 import org.json.JSONObject;
 
@@ -20,6 +22,8 @@ public class JsonReaderBudget extends JsonReader {
     public Budget read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
+        EventLog.getInstance().logEvent(new Event("Loaded budget data from JSON."));
+
         return addBudget(jsonObject);
     }
 
@@ -30,7 +34,6 @@ public class JsonReaderBudget extends JsonReader {
         int monthlyBudget = json.getInt("monthlyBudget");
         int amtSpent = json.getInt("amtSpent");
         int amtLeft = json.getInt("amtLeft");
-        System.out.println("here");
         Money money = new Money(monthlyBudget);
         Budget budget = new Budget(money);
         budget.setAmtSpent(amtSpent);

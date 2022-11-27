@@ -1,1 +1,20 @@
-{"groceries": []}
+{"groceries": [
+    {
+        "servingsLeft": 2,
+        "price": 100,
+        "storingMethod": "pantry",
+        "expiryMonth": -1,
+        "label": "beans",
+        "expiryDay": -1,
+        "expiryYear": -1
+    },
+    {
+        "servingsLeft": 2,
+        "price": 100,
+        "storingMethod": "pantry",
+        "expiryMonth": -1,
+        "label": "beas",
+        "expiryDay": -1,
+        "expiryYear": -1
+    }
+]}

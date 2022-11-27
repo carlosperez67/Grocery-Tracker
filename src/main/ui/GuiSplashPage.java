@@ -193,7 +193,6 @@ public class GuiSplashPage extends JFrame {
     private void loadLOG() {
         try {
             groceries = jsonReaderGrocery.read();
-            System.out.println("Loaded groceries from " + JSON_STORE_G);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_G);
         }
@@ -204,7 +203,6 @@ public class GuiSplashPage extends JFrame {
     private void loadBudget() {
         try {
             this.budget = jsonReaderBudget.read();
-            System.out.println("Loaded budget from " + JSON_STORE_B);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_B);
         }

@@ -1,5 +1,7 @@
 package persistance;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import model.ListOfGroceries;
 import org.json.JSONObject;
 
@@ -15,6 +17,7 @@ public class JsonWriterGrocery extends JsonWriter {
     // MODIFIES: this
     // EFFECTS: writes JSON representation of ListOfGroceries to file
     public void write(ListOfGroceries log) {
+        EventLog.getInstance().logEvent(new Event("Saved grocery list data to JSON."));
         JSONObject json = log.toJson();
         saveToFile(json.toString(TAB));
     }

@@ -1,5 +1,7 @@
 package ui;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import model.*;
 import persistance.JsonReaderBudget;
 import persistance.JsonReaderGrocery;
@@ -9,6 +11,9 @@ import persistance.JsonWriterGrocery;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
@@ -51,16 +56,32 @@ public class GuiAlpha extends JFrame {
     public GuiAlpha(ListOfGroceries groceries, Budget budget) {
         super("Grocery App");
         setSize(WIDTH, HEIGHT);
+        // TODO These are changes
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         initializeFields(groceries, budget);
-
+        closeWindowFunc();
         addButtonPanel();
         centreOnScreen();
         setVisible(true);
     }
 
-// Initialization ---------------------------------------------------------------------------------------
+    public void closeWindowFunc() {
+        WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("Ended");
+                for (Event ev : EventLog.getInstance()) {
+                    System.out.println(ev.getDescription());
+                    System.out.println("\n");
+                }
+                System.exit(0);
+            }
+        };
+    }
+
+
+    // Initialization ---------------------------------------------------------------------------------------
     // Modifies: this
     // Effects: Initializes fields
     public void initializeFields(ListOfGroceries groceries, Budget budget) {
@@ -235,7 +256,7 @@ public class GuiAlpha extends JFrame {
     }
 
 
- // GUI HELPER METHODS   --------------------------------------------------------------------
+    // GUI HELPER METHODS   --------------------------------------------------------------------
     // Effects: helper to create gui
     public JPanel createBiggerPanelHelper(JPanel pl) {
         JPanel panelLabel = new JPanel();
@@ -280,7 +301,6 @@ public class GuiAlpha extends JFrame {
             jsonWriterGrocery.open();
             jsonWriterGrocery.write(groceries);
             jsonWriterGrocery.close();
-            System.out.println("Saved groceries to " + JSON_STORE_G);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE_G);
         }
@@ -292,7 +312,6 @@ public class GuiAlpha extends JFrame {
             jsonWriterBudget.open();
             jsonWriterBudget.write(budget);
             jsonWriterBudget.close();
-            System.out.println("Saved budget to " + JSON_STORE_B);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE_B);
         }
@@ -303,7 +322,6 @@ public class GuiAlpha extends JFrame {
     private void loadLOG() {
         try {
             groceries = jsonReaderGrocery.read();
-            System.out.println("Loaded groceries from " + JSON_STORE_G);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_G);
         }
@@ -314,13 +332,12 @@ public class GuiAlpha extends JFrame {
     private void loadBudget() {
         try {
             this.budget = jsonReaderBudget.read();
-            System.out.println("Loaded budget from " + JSON_STORE_B);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_B);
         }
     }
 
-   // Modifies: this
+    // Modifies: this
     // Effects: centres this on screen
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -565,7 +582,9 @@ public class GuiAlpha extends JFrame {
         }
     }
 
-    /** Class to show all groceries added **/
+    /**
+     * Class to show all groceries added
+     **/
     private class ShowAction extends AbstractAction {
 
         ShowAction() {

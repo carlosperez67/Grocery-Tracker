@@ -1,5 +1,7 @@
 package persistance;
 
+import eventlog.Event;
+import eventlog.EventLog;
 import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +23,7 @@ public class JsonReaderGrocery extends JsonReader {
     public ListOfGroceries read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
+        EventLog.getInstance().logEvent(new Event("Loaded grocery list data from JSON."));
         return parseListOfGroceries(jsonObject);
     }
 
