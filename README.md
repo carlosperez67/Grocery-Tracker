@@ -66,3 +66,5 @@ new class (such as the Math class). However, if I had more time I would simply r
 One huge issue in my project is the lack of robustness. If I had more time I would definitely make all my classes robust. Currently, the input values for all my grocery items
 is very error-prone as it needs perfect format. I would create error handling and provide the user with an error message telling the user to retry the entry. This would 
 include creating new exception classes such as "IncorrectFormatException" and "NegativeValueException". 
+
+I also want to add all functionality to the GUI version in the future as well. 
