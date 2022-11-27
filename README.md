@@ -53,3 +53,16 @@ This has led to things going bad and me having to throw them out. Forgetting wha
 - You can locate my visual component on the initial splashscreen (can't miss it)
 - You can save the state of my application by clicking the save button
 - You can reload the state of my application by either loading it when prompted on the splashscreen or clicking the load button
+
+# Phase 4: Task 3
+
+When I look at my UML diagram, the first thing I notice is how the GuiSplashPage and GuiAlpha classes should really be condensed into the same class.
+This is because they share a lot of the same fields and would benefit from being combined, however, when creating the gui I didn't quite know how the final produce
+would turn out, and I simply kept developing the project as is and in the end I didn't have enough time to refactor. 
+
+Another sore spot with my project is the implementation of the Money and Budget Classes. I wanted to be able to keep track of decimal values without having to import and understand a whole
+new class (such as the Math class). However, if I had more time I would simply remove the Money class and use import the Math class within Budget to preform calculations. 
+
+One huge issue in my project is the lack of robustness. If I had more time I would definitely make all my classes robust. Currently, the input values for all my grocery items
+is very error-prone as it needs perfect format. I would create error handling and provide the user with an error message telling the user to retry the entry. This would 
+include creating new exception classes such as "IncorrectFormatException" and "NegativeValueException". 
